@@ -40,6 +40,8 @@ import com.example.collectorapp.MyBottomAppBar
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
 import com.example.collectorapp.ui.screens.Authentication.SignIn.ui.theme.CollectorAppTheme
 import com.example.collectorapp.ui.screens.Authentication.Signup.RegisterInterface
+import com.example.collectorapp.ui.screens.Authentication.Signup.authenticationViewModel
+import com.example.collectorapp.ui.screens.Authentication.Signup.textState
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Categories.AddNewCategories
 import com.example.collectorapp.ui.screens.Categories.CreateCategories
@@ -129,12 +131,20 @@ fun UserInput(s: AuthenticationViewModel, navController: NavController) {
         )
         Spacer(modifier = Modifier.padding(10.dp))
         LoginButton(onClick = {
-            navController.navigate("home")
-           /* if (s.fetchUserInformation(s._loginState.value.email, s._loginState.value.password)){
-
+            if (authenticationViewModel._loginState.value.email.isEmpty()){
+                // Toast.makeText(context = this, "Enter your last name", Toast.LENGTH_SHORT).show()
+            }
+            else if (authenticationViewModel._loginState.value.password.isEmpty()){
+                // Toast.makeText(this, "Password should not be empty", Toast.LENGTH_SHORT).show()
+            }
+            else if (authenticationViewModel._userReg.value.email != authenticationViewModel._userReg.value.email){
+                //
+            }
+            else if (authenticationViewModel._userReg.value.password != authenticationViewModel._loginState.value.password){
+                //
             }else{
-                navController.navigate("login_interface")
-            }*/
+                        navController.navigate("home")
+            }
         })
     }
 }

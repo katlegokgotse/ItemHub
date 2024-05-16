@@ -3,6 +3,8 @@ package com.example.collectorapp.ui.screens.Categories
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,9 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,7 +28,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,14 +67,14 @@ fun AddNewCategories(addCategoryViewModel: AddCategoryViewModel, navController: 
     Box(modifier = Modifier.padding(40.dp)){
         Column(){
             AddMyCategoryCard(
-                addCategoryViewModel = addCategoryViewModel,
+                addCategoryViewModel =addCategoryViewModel ,
                 painter = painterResource(id = R.drawable.cto),
                 contentDescription = addCategoryViewModel._categoryState.value.categoryName,
                 title = addCategoryViewModel._categoryState.value.categoryName,
                 modifier = Modifier,
                 onClick = {
-                    navController.navigate(route = "create_category")
-                })
+                    addCategoryViewModel.updateCategoryState(
+                }
 
         }
     }
@@ -138,8 +147,50 @@ fun UserCategoryInput(addCategoryViewModel: AddCategoryViewModel, navController:
 
 }
 
-
-
+@Composable
+fun AddMyCategoryCard(
+    addCategoryViewModel: AddCategoryViewModel,
+    painter: Painter, contentDescription: String,
+    title: String, modifier: Modifier,
+    onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.5f)
+            .padding(16.dp)
+    ) {
+        Column() {
+            Card(
+                modifier = modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(50.dp),
+                //elevation = 5.dp
+            ) {
+                Box(
+                    modifier = Modifier.height(200.dp)
+                ) {
+                    Image(
+                        painter = painter,
+                        contentDescription = contentDescription,
+                        contentScale = ContentScale.Crop
+                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(12.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        IconButton(
+                            modifier = Modifier.background(Color.White),
+                            onClick = onClick
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = null)
+                        }
+                    }
+                }
+            }
+            Text(text = addCategoryViewModel._categoryState.value.categoryName)
+        }
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview3() {

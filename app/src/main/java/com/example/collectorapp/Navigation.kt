@@ -17,7 +17,7 @@ import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 fun NavigateAuth(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = "create_items",
+    startDestination: String = "registration_interface",
     signInViewModel: AuthenticationViewModel,
     addCategoryViewModel: AddCategoryViewModel,
     addItemsViewModel: AddItemsViewModel

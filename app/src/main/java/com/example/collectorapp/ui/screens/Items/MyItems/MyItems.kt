@@ -46,22 +46,16 @@ class AddItems : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyItemsCard(
-                        addItemsViewModel = addItemsViewModel,
-                       painter = painterResource(id = R.drawable.cto),
-                        contentDescription = "Test",
-                        title = "Add new Item",
-                        modifier = Modifier
+                    Column(){
+                        MyItemsCard(
+                            addItemsViewModel = addItemsViewModel,
+                            painter = painterResource(id = R.drawable.cto),
+                            contentDescription = "Test",
+                            title = "Add new Item",
+                            modifier = Modifier
                         )
-                    AddMyCategoryCard(
-                        addCategoryViewModel =addCategoryViewModel ,
-                        painter = painterResource(id = R.drawable.cto),
-                        contentDescription = addCategoryViewModel._categoryState.value.categoryName,
-                        title = addCategoryViewModel._categoryState.value.categoryName,
-                        modifier = Modifier
-                    ) {
-
                     }
+
                 }
             }
         }
@@ -102,56 +96,13 @@ fun MyItemsCard(
                     }
                 }
             }
-            Text(text = addItemsViewModel._itemsState.value.itemName)
+            Text(text = addItemsViewModel._itemsState.value.itemName,
+                color = Color.Black)
         }
     }
 
 }
 
-@Composable
-fun AddMyCategoryCard(
-    addCategoryViewModel: AddCategoryViewModel,
-    painter: Painter, contentDescription: String,
-    title: String, modifier: Modifier,
-    onClick: () -> Unit){
-    Box(
-        modifier = Modifier
-            .fillMaxWidth(0.5f)
-            .padding(16.dp)
-    ){
-        Column(){
-            Card(
-                modifier = modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(50.dp),
-                //elevation = 5.dp
-            ){
-                Box(
-                    modifier = Modifier.height(200.dp)
-                ){
-                    Image(
-                        painter = painter,
-                        contentDescription = contentDescription,
-                        contentScale = ContentScale.Crop
-                    )
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(12.dp),
-                        contentAlignment = Alignment.Center,
-                    ){
-                        IconButton(
-                            modifier = Modifier.background(Color.White),
-                            onClick = onClick) {
-                            Icon(Icons.Default.Add, contentDescription = null)
-                        }
-                    }
-                }
-            }
-            Text(text = addCategoryViewModel._categoryState.value.categoryName)
-        }
-    }
-
-}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

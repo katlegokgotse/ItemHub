@@ -40,7 +40,6 @@ class AddItems : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     AddingItems(addItemsViewModel)
-
                 }
             }
         }

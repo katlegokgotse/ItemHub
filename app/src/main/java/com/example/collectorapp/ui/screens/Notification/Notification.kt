@@ -14,7 +14,7 @@ fun Notification(){
             .align(Alignment.Center),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally){
-                Text(text = "Navigation")
+                Text(text = "Notifications")
         }
     }
 }

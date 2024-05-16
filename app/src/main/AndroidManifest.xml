@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,6 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CollectorApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.screens.Camera.Camera.CameraMainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_camera_main"
+            android:theme="@style/Theme.CollectorApp" />
         <activity
             android:name=".ui.screens.Camera.CameraMainActivity"
             android:exported="false"

@@ -145,7 +145,7 @@ fun RegisterUserInput( authenticationViewModel: AuthenticationViewModel, navCont
                     authenticationViewModel._userReg.value.password,
                 )
                 authenticationViewModel.addUserRegistrationList(newUser)
-                navController.navigate("login_interface")
+                navController.navigate("home")
             }
         })
     }

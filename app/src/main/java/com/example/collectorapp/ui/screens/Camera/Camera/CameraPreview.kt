@@ -1,4 +1,4 @@
-package com.example.collectorapp.ui.screens.Camera
+package com.example.collectorapp.ui.screens.Camera.Camera
 
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
@@ -12,12 +12,12 @@ fun CameraPreview(
     controller: LifecycleCameraController,
     modifier: Modifier = Modifier
 ){
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifcycleOwner = LocalLifecycleOwner.current
     AndroidView(factory = {
-        PreviewView(it).apply{
-            this.controller = controller
-            controller.bindToLifecycle(lifecycleOwner)
+            PreviewView(it).apply {
+                this.controller = controller
+                controller.bindToLifecycle(lifcycleOwner)
         }
     },
-        modifier = modifier)
+        modifier = Modifier)
 }

@@ -43,11 +43,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
-import com.example.collectorapp.ui.screens.Camera.CameraMainActivity
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Home.Home
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
-import com.example.collectorapp.ui.screens.Items.MyItems.AddMyCategoryCard
 import com.example.collectorapp.ui.screens.Items.MyItems.MyItemsCard
 import com.example.collectorapp.ui.screens.Search.Search
 import com.example.collectorapp.ui.theme.CollectorAppTheme
@@ -88,13 +86,15 @@ fun CategorySection(a: AddItemsViewModel) {
 }
 @Composable
 fun AddCategorySection(a: AddCategoryViewModel, navController: NavController, onClick: () -> Unit) {
-            AddMyCategoryCard(a,
+         /*   AddMyCategoryCard(a,
                 painter = painterResource(id = R.drawable.cto),
                 contentDescription = a._categoryState.value.categoryName,
                 title = a._categoryState.value.categoryName,
                 modifier = Modifier.width(150.dp),
                 onClick = onClick
             )
+            */
+
 }
 @Composable
 fun SearchBar(addItemsViewModel: AddItemsViewModel){
@@ -162,7 +162,6 @@ fun MyBottomAppBar(signInViewModel: AuthenticationViewModel) {
                         Toast.makeText(context, "Open Bottom Sheet", Toast.LENGTH_SHORT).show()
                     }) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = null, tint = Color.Red)
-                        CameraMainActivity()
                     }
                 }
                 //Profile

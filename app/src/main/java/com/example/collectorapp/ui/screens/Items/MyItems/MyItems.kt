@@ -116,12 +116,12 @@ fun MyItemsPreview() {
             contentDescription = a._itemsState.value.itemDescription,
             title = a._itemsState.value.itemName,
             modifier = Modifier )
-        AddMyCategoryCard(
+        /*AddMyCategoryCard(
             addCategoryViewModel = ac,
             painter = painterResource(id = R.drawable.cto),
             contentDescription = a._itemsState.value.itemDescription,
             title = a._itemsState.value.itemName,
             modifier = Modifier
-        ) { /**/ }
+        ) { /**/ }*/
     }
 }

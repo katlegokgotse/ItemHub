@@ -12,12 +12,13 @@ import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
 import com.example.collectorapp.ui.screens.Items.AddItems.AddingItems
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
+import com.example.collectorapp.ui.screens.Startup.SplashScreen.SplashScreen
 
 @Composable
 fun NavigateAuth(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = "registration_interface",
+    startDestination: String = "splash_screen",
     signInViewModel: AuthenticationViewModel,
     addCategoryViewModel: AddCategoryViewModel,
     addItemsViewModel: AddItemsViewModel
@@ -41,6 +42,9 @@ fun NavigateAuth(
         }
         composable(route = "create_items"){
             AddingItems(addItemsViewModel = addItemsViewModel)
+        }
+        composable(route = "splash_screen"){
+            SplashScreen(navController = navController)
         }
     }
 

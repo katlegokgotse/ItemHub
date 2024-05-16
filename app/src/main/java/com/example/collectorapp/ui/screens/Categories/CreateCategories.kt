@@ -41,7 +41,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Authentication.UserRegistration
 import com.example.collectorapp.ui.screens.Categories.ui.theme.CollectorAppTheme
-import com.example.collectorapp.ui.screens.Items.MyItems.AddMyCategoryCard
 
 class CreateCategories : ComponentActivity() {
     private val addCategoryViewModel = AddCategoryViewModel() // Initialize your ViewModel
@@ -73,8 +72,8 @@ fun AddNewCategories(addCategoryViewModel: AddCategoryViewModel, navController: 
                 title = addCategoryViewModel._categoryState.value.categoryName,
                 modifier = Modifier,
                 onClick = {
-                    addCategoryViewModel.updateCategoryState(
-                }
+                   navController.navigate("home")
+                })
 
         }
     }

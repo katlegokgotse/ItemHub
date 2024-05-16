@@ -34,7 +34,7 @@ fun SplashScreen(navController: NavController){
                 })
         )
         delay(1000L)
-        navController.navigate("registration_interface")
+        navController.navigate("onboarding_page")
     }
     Box(
         contentAlignment = Alignment.Center,

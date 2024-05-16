@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,10 +31,10 @@ import androidx.navigation.NavController
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
 import com.example.collectorapp.ui.screens.Authentication.SignIn.GoogleButton
-import com.example.collectorapp.ui.screens.Authentication.UserRegistratio
+import com.example.collectorapp.ui.screens.Authentication.UserRegistration
 
 val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
-
+val textState: MutableState<String> = mutableStateOf("");
 @Composable
 fun RegisterInterface(authenticationViewModel: AuthenticationViewModel, navController: NavController){
     Box(modifier = Modifier.fillMaxSize()){
@@ -109,11 +110,12 @@ fun RegisterUserInput( authenticationViewModel: AuthenticationViewModel, navCont
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         )
-        val textState = remember(mutableStateOf(""))
+
         Spacer(modifier = Modifier.padding(10.dp))
+
             OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = textState,
+            value = textState.value,
             onValueChange = { textState.value = it},
             label = { Text(text = "Confirm Password")},
             visualTransformation = PasswordVisualTransformation(),
@@ -122,31 +124,29 @@ fun RegisterUserInput( authenticationViewModel: AuthenticationViewModel, navCont
        Spacer(modifier = Modifier.padding(10.dp))
         RegisterButton(onClick = {
             if (authenticationViewModel._userReg.value.firstName.isEmpty()){
-                Toast.makeText(context = this, "Enter your first name", Toast.LENGTH_SHORT).show()
+               // Toast.makeText(context = this, "Enter your first name", Toast.LENGTH_SHORT).show()
             }else if (authenticationViewModel._userReg.value.lastName.isEmpty()){
-                Toast.makeText(context = this, "Enter your last name", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context = this, "Enter your last name", Toast.LENGTH_SHORT).show()
             }
             else if (authenticationViewModel._userReg.value.email.isEmpty()){
-                Toast.makeText(context = this, "Enter your last name", Toast.LENGTH_SHORT).show()
+               // Toast.makeText(context = this, "Enter your last name", Toast.LENGTH_SHORT).show()
             }
             else if (authenticationViewModel._userReg.value.password.isEmpty()){
-                    Toast.makeText(this, "Password should not be empty", Toast.LENGTH_SHORT).show()
+                   // Toast.makeText(this, "Password should not be empty", Toast.LENGTH_SHORT).show()
                    }
-            else if (authenticationViewModel._userReg.value.password !== authenticationViewModel._userReg.value){
-                    Toast.makeText(this, "Password should not be empty", Toast.LENGTH_SHORT).show()
-                   }
-            
-            authenticationViewModel._userReg.value.email,
-            authenticationViewModel._userReg.value.password,
+            else if (textState.value != authenticationViewModel._userReg.value.password){
+                //
+            }
+            else{
                 val newUser = UserRegistration(
-                authenticationViewModel._userReg.value.firstName,
-                authenticationViewModel._userReg.value.lastName,
-                authenticationViewModel._userReg.value.email,
-                authenticationViewModel._userReg.value.password,
-            )
+                    authenticationViewModel._userReg.value.firstName,
+                    authenticationViewModel._userReg.value.lastName,
+                    authenticationViewModel._userReg.value.email,
+                    authenticationViewModel._userReg.value.password,
+                )
                 authenticationViewModel.addUserRegistrationList(newUser)
                 navController.navigate("login_interface")
-
+            }
         })
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -39,10 +40,10 @@ fun MyTextField(labelValue:String, painter: Painter){
         label = {
             Text(text = labelValue)
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
+            cursorColor = Color.White,
             focusedBorderColor = Color.White,
             focusedLabelColor = Color.White,
-            cursorColor = Color.White
         ),
         keyboardOptions = KeyboardOptions.Default,
         onValueChange = {
@@ -69,10 +70,10 @@ fun MyPasswordTextField(labelValue:String, painter: Painter){
         label = {
             Text(text = labelValue)
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
+            cursorColor = Color.White,
             focusedBorderColor = Color.White,
             focusedLabelColor = Color.White,
-            cursorColor = Color.White
         ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         onValueChange = {

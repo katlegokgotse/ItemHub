@@ -21,8 +21,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowLeft
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -67,7 +67,7 @@ fun OnBoarding(navController: NavController) {
             onSkipClick = {
                 if (pageState.currentPage + 1 <= items.size) scope.launch {
                     //pageState.scrollToPage(items.size - 1)
-                    navController.navigate("registration_interface")
+                    navController.navigate("call_to_action")
                 }
             }
         )
@@ -105,7 +105,7 @@ fun TopSection(onBackClick: () -> Unit = {}, onSkipClick: () -> Unit = {}) {
     ) {
         // Back button
         IconButton(onClick = onBackClick, modifier = Modifier.align(Alignment.CenterStart)) {
-            Icon(imageVector = Icons.Outlined.KeyboardArrowLeft, contentDescription = null)
+            Icon(imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft, contentDescription = null)
         }
 
         // Skip Button
@@ -138,7 +138,8 @@ fun BottomSection(size: Int, index: Int, onButtonClick: () -> Unit = {}) {
                 .align(Alignment.CenterEnd)
                 .clip(RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp))
         ) {
-            Icon(Icons.Outlined.KeyboardArrowRight,
+            Icon(
+                Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                 tint = Color.White,
                 contentDescription = "Localized description")
         }
@@ -187,7 +188,7 @@ fun OnBoardingItem(items: OnboardingItems) {
             contentDescription = "Image1",
             contentScale = ContentScale.None
         )
-        Column(){
+        Column {
             Spacer(modifier = Modifier.height(190.dp))
             Text(
                 modifier = Modifier.fillMaxWidth().padding(1.dp),

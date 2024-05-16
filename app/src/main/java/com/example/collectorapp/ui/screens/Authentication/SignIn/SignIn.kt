@@ -68,7 +68,7 @@ class SignIn : ComponentActivity() {
 
 @Composable
 fun LoginInterface(s: AuthenticationViewModel, navController: NavController){
-    Box(){
+    Box {
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.cto),

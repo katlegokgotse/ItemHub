@@ -34,7 +34,8 @@ import com.example.collectorapp.ui.screens.Authentication.SignIn.GoogleButton
 import com.example.collectorapp.ui.screens.Authentication.UserRegistration
 
 val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
-val textState: MutableState<String> = mutableStateOf("");
+val textState: MutableState<String> = mutableStateOf("")
+
 @Composable
 fun RegisterInterface(authenticationViewModel: AuthenticationViewModel, navController: NavController){
     Box(modifier = Modifier.fillMaxSize()){

@@ -63,11 +63,7 @@ class AuthenticationViewModel: ViewModel(){
     }
     fun fetchUserInformation(email: String, password: String):Boolean{
         val user = _userList.value.usersRegistration.find { it.email == email && it.password == password }
-        return if (user != null){
-            true
-        }else{
-            false
-        }
+        return user != null
     }
 }
 data class LoginScreen(

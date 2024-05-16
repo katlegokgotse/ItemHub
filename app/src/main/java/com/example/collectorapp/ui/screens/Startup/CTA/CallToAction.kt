@@ -22,21 +22,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.collectorapp.R
 
 @Composable
-fun CallToAction(onNavigateLogin: () -> Unit, onNavigateRegister: () -> Unit){
+fun CallToAction(navController: NavController){
     Box(modifier = Modifier.fillMaxSize()) {
         Image(painter = painterResource(id = R.drawable.cto),
             contentDescription = "CTO",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize())
-        WelcomeText({ onNavigateLogin() }, { onNavigateRegister() })
+        WelcomeText(navController)
     }
 }
 
 @Composable
-fun WelcomeText(onNavigateLogin: () -> Unit, onNavigateRegister: () -> Unit){
+fun WelcomeText(navController: NavController){
     Column(modifier = Modifier.fillMaxSize()){
         Spacer(
             modifier = Modifier.height(200.dp)
@@ -53,19 +54,19 @@ fun WelcomeText(onNavigateLogin: () -> Unit, onNavigateRegister: () -> Unit){
         Spacer(
             modifier = Modifier.height(125.dp)
         )
-        Buttons( onNavigateLogin, onNavigateRegister)
+        Buttons( navController )
     }
 }
 @Composable
-fun Buttons(onNavigateLogin: () -> Unit, onNavigateRegister: () -> Unit){
+fun Buttons(navController: NavController){
     Row(modifier = Modifier.padding(30.dp),
         horizontalArrangement  = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically) {
-        Button(onClick = { onNavigateLogin() }) {
+        Button(onClick = { navController.navigate("login_interface") }) {
             Text(text = "Login")
         }
         Spacer(modifier = Modifier.padding(end = 50.dp))
-        OutlinedButton(onClick = { onNavigateRegister() },
+        OutlinedButton(onClick = { navController.navigate("registration_interface") },
         ) {
             Text(text = "Create Account",
                 color = Color.White)

@@ -61,7 +61,7 @@ class Main : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column(){
+                    Column {
                         SearchBar(addItemsViewModel = addItemsViewModel)
                         MyBottomAppBar(signInViewModel, )
                         CategorySection(addItemsViewModel)
@@ -74,7 +74,7 @@ class Main : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategorySection(a: AddItemsViewModel) {
-    Column(){
+    Column {
         Row {
             MyItemsCard(a,
                 painter = painterResource(id = R.drawable.cto),
@@ -98,7 +98,7 @@ fun AddCategorySection(a: AddCategoryViewModel, navController: NavController, on
 }
 @Composable
 fun SearchBar(addItemsViewModel: AddItemsViewModel){
-    Column(){
+    Column {
         OutlinedTextField(value = addItemsViewModel._itemsState.value.itemName,
             onValueChange = {addItemsViewModel.updateItemName(it) },
             label = { Text("Search for Item")}
@@ -159,7 +159,7 @@ fun MyBottomAppBar(signInViewModel: AuthenticationViewModel) {
                     contentAlignment = Alignment.Center
                 ){
                     FloatingActionButton(onClick = {
-                        Toast.makeText(context, "Open Bottom Sheet", Toast.LENGTH_SHORT).show()
+                        navigationController.navigate("create_items")
                     }) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = null, tint = Color.Red)
                     }

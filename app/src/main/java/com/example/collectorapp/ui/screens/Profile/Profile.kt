@@ -65,7 +65,7 @@ fun ProfileNameDetails(a: AuthenticationViewModel) {
 fun MyItems(addCategoryViewModel: AddCategoryViewModel){
     Column {
         HeadingText(value = "My Items")
-        LazyRow(){
+        LazyRow {
                 items(
                     addCategoryViewModel._categoryListState.value.categoryList.ifEmpty {
                         listOf(null)

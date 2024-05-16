@@ -64,7 +64,7 @@ class CreateCategories : ComponentActivity() {
 @Composable
 fun AddNewCategories(addCategoryViewModel: AddCategoryViewModel, navController: NavController){
     Box(modifier = Modifier.padding(40.dp)){
-        Column(){
+        Column {
             AddMyCategoryCard(
                 addCategoryViewModel =addCategoryViewModel ,
                 painter = painterResource(id = R.drawable.cto),
@@ -157,7 +157,7 @@ fun AddMyCategoryCard(
             .fillMaxWidth(0.5f)
             .padding(16.dp)
     ) {
-        Column() {
+        Column {
             Card(
                 modifier = modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(50.dp),

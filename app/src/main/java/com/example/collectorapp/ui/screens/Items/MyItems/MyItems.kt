@@ -46,7 +46,7 @@ class AddItems : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column(){
+                    Column {
                         MyItemsCard(
                             addItemsViewModel = addItemsViewModel,
                             painter = painterResource(id = R.drawable.cto),
@@ -72,7 +72,7 @@ fun MyItemsCard(
             .fillMaxWidth(0.5f)
             .padding(16.dp)
     ){
-        Column(){
+        Column {
             Card(
                 modifier = modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(50.dp),

@@ -12,6 +12,7 @@ import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
 import com.example.collectorapp.ui.screens.Items.AddItems.AddingItems
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
+import com.example.collectorapp.ui.screens.Startup.CTA.CallToAction
 import com.example.collectorapp.ui.screens.Startup.Onboarding.OnBoarding
 import com.example.collectorapp.ui.screens.Startup.SplashScreen.SplashScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -52,6 +53,9 @@ fun NavigateAuth(
 
         composable(route = "onboarding_page"){
             OnBoarding(navController = navController)
+        }
+        composable(route = "call_to_action"){
+            CallToAction(navController = navController)
         }
     }
 

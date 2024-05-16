@@ -106,7 +106,7 @@ fun Home(s: AuthenticationViewModel,
 }
 @Composable
 fun SearchBar(addItemsViewModel: AddItemsViewModel){
-    Column(){
+    Column {
         OutlinedTextField(value = addItemsViewModel._itemsState.value.itemName,
             onValueChange = {addItemsViewModel.updateItemName(it) },
             label = { Text("Search for Item")}

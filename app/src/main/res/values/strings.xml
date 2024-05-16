@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CollectorApp</string>
+    <string name="title_activity_sign_in">SignIn</string>
+    <string name="title_activity_add_items">AddItems</string>
+    <string name="title_activity_create_categories">CreateCategories</string>
+    <string name="title_activity_camera_main">CameraMainActivity</string>
+</resources>

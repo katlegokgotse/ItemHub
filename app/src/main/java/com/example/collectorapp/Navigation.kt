@@ -51,7 +51,7 @@ fun NavigateAuth(
         }
 
         composable(route = "onboarding_page"){
-            OnBoarding()
+            OnBoarding(navController = navController)
         }
     }
 

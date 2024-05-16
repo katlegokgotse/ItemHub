@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.collectorapp.R
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -50,7 +52,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalPagerApi
 @Composable
-fun OnBoarding() {
+fun OnBoarding(navController: NavController) {
     val items = OnboardingItems.getData()
     val scope = rememberCoroutineScope()
     val pageState = rememberPagerState()
@@ -63,8 +65,9 @@ fun OnBoarding() {
                 }
             },
             onSkipClick = {
-                if (pageState.currentPage + 1 < items.size) scope.launch {
-                    pageState.scrollToPage(items.size - 1)
+                if (pageState.currentPage + 1 <= items.size) scope.launch {
+                    //pageState.scrollToPage(items.size - 1)
+                    navController.navigate("registration_interface")
                 }
             }
         )
@@ -82,6 +85,11 @@ fun OnBoarding() {
             if (pageState.currentPage + 1 < items.size) scope.launch {
                 pageState.scrollToPage(pageState.currentPage + 1)
             }
+            if (pageState.currentPage == items.size){
+                scope.launch {
+                    navController.navigate("registration_interface")
+                }
+            }
         }
     }
 }
@@ -93,6 +101,7 @@ fun TopSection(onBackClick: () -> Unit = {}, onSkipClick: () -> Unit = {}) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
+            .background(color = Color.Transparent),
     ) {
         // Back button
         IconButton(onClick = onBackClick, modifier = Modifier.align(Alignment.CenterStart)) {
@@ -115,7 +124,9 @@ fun BottomSection(size: Int, index: Int, onButtonClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp)
+            .padding(10.dp)
+            .background(color = Color.Transparent)
+
     ) {
         // Indicators
         Indicators(size, index)
@@ -153,7 +164,6 @@ fun Indicator(isSelected: Boolean) {
         targetValue = if (isSelected) 25.dp else 10.dp,
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
     )
-
     Box(
         modifier = Modifier
             .height(10.dp)
@@ -175,18 +185,20 @@ fun OnBoardingItem(items: OnboardingItems) {
         Image(
             painter = painterResource(id = items.image),
             contentDescription = "Image1",
-            modifier = Modifier.padding(start = 50.dp, end = 50.dp)
+            contentScale = ContentScale.None
         )
         Column(){
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(190.dp))
             Text(
+                modifier = Modifier.fillMaxWidth().padding(1.dp),
                 text = items.title,
                 style = MaterialTheme.typography.headlineMedium,
-                // fontSize = 24.sp,
+                fontSize = 80.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                letterSpacing = 1.sp,
+                textAlign = TextAlign.Start,
+                letterSpacing = 5.sp,
+                lineHeight = 80.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -215,16 +227,16 @@ class OnboardingItems(
         fun getData(): List<OnboardingItems>{
             return listOf(
                 OnboardingItems(
-                    image = R.drawable.ic_launcher_background,
-                    title = "",
+                    image = R.drawable.cto,
+                    title = "Capture Your Living",
                     desc = ""
                 ), OnboardingItems(
-                    image = R.drawable.ic_launcher_background,
-                    title = "",
+                    image = R.drawable.ob1,
+                    title = "Store your home on mobile",
                     desc = ""
                 ), OnboardingItems(
-                    image = R.drawable.ic_launcher_background,
-                    title = "",
+                    image = R.drawable.ob2,
+                    title = "Manage your home online",
                     desc = ""
                 ),
             )

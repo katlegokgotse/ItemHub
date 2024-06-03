@@ -30,10 +30,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.collectorapp.R
-import com.example.collectorapp.ui.screens.Authentication.UserRegistration
+import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Items.AddItems.ui.theme.CollectorAppTheme
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 import com.example.collectorapp.ui.screens.Items.ItemInformation
@@ -42,6 +41,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 
 class AddItems : ComponentActivity() {
     val addItemsViewModel: AddItemsViewModel = AddItemsViewModel()
+    val addCategoryViewModel: AddCategoryViewModel = AddCategoryViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -51,7 +51,7 @@ class AddItems : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AddingItems(addItemsViewModel)
+                    AddingItems(addItemsViewModel, addCategoryViewModel = addCategoryViewModel)
                 }
             }
         }
@@ -59,18 +59,18 @@ class AddItems : ComponentActivity() {
 }
 
 @Composable
-fun AddingItems(addItemsViewModel: AddItemsViewModel){
+fun AddingItems(addItemsViewModel: AddItemsViewModel, addCategoryViewModel: AddCategoryViewModel){
     Box(modifier = Modifier.padding(40.dp)){
 
         LazyColumn {
             item {
                 LazyRow {
                     item {
-                       AddingItems(addItemsViewModel = addItemsViewModel)
+                       AddingItems(addItemsViewModel = addItemsViewModel, addCategoryViewModel = addCategoryViewModel)
                     }
                     item{
                         MyItemsCard(
-                            addItemsViewModel = addItemsViewModel,
+                            addItemsViewModel = addCategoryViewModel,
                             painter = painterResource(id = R.drawable.cto),
                             contentDescription = addItemsViewModel._itemsState.value.itemDescription,
                             title = addItemsViewModel._itemsState.value.itemName,

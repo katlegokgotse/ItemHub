@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -81,31 +82,23 @@ fun AddNewCategories(addCategoryViewModel: AddCategoryViewModel, navController: 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserCategoryInput(addCategoryViewModel: AddCategoryViewModel, navController: NavController){
-    Scaffold(
-        modifier = Modifier.height(35.dp),
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "My App") },
+    Column(){
+        Row(){
 
-                actions = {
-                    // Optional actions for the app bar
-                    Button(onClick = {
-                        val newCategory = Categories(
-                            addCategoryViewModel._categoryState.value.categoryName,
-                            addCategoryViewModel._categoryState.value.categoryLocation,
-                            addCategoryViewModel._categoryState.value.categoryCreated
-                        )
-                        addCategoryViewModel.saveCategory(newCategory)
-                        navController.navigate("home")
-                    }
-                    ) {
-                        Text(text = "Save")
-                    }
-                }
-            )
+            // Optional actions for the app bar
+            Button(onClick = {
+                val newCategory = Categories(
+                    addCategoryViewModel._categoryState.value.categoryName,
+                    addCategoryViewModel._categoryState.value.categoryLocation,
+                    addCategoryViewModel._categoryState.value.categoryCreated
+                )
+                addCategoryViewModel.saveCategory(newCategory)
+                navController.navigate("home")
+            }
+            ) {
+                Text(text = "Save")
+            }
         }
-    ){
-        padding ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
@@ -142,8 +135,6 @@ fun UserCategoryInput(addCategoryViewModel: AddCategoryViewModel, navController:
 
         }
     }
-
-
 }
 
 @Composable

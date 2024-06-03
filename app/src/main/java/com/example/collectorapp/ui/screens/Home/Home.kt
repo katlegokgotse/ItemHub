@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,15 +54,28 @@ fun Home(s: AuthenticationViewModel,
                 SearchBar(addItemsViewModel = addItemsViewModel)
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(text = "Welcome ${s._userReg.value.firstName} ${s._userReg.value.lastName}")
-                HeadingText(value = "Categories")
+                TextButton(onClick = {
+                    navController.navigate("categories_home")
+                }) {
+                    HeadingText(value = "Categories")
+                }
                 LazyRow {
+                    item{
+                        AddCategorySection(
+                            a = addCategoryViewModel,
+                            navController = navController,
+                            onClick = {
+                                navController.navigate("create_category")
+                            }
+                        )
+                    }
                     items(
                         addCategoryViewModel._categoryListState.value.categoryList.ifEmpty {
                             listOf(null)
                         }
                     ) { category ->
                         if (category != null) {
-                            CategorySection(a = addItemsViewModel)
+                            CategorySection(a = addCategoryViewModel)
                         } else {
                             AddCategorySection(
                                 a = addCategoryViewModel,
@@ -86,7 +100,7 @@ fun Home(s: AuthenticationViewModel,
                         }
                     ) { category ->
                         if (category != null) {
-                            CategorySection(a = addItemsViewModel)
+                            CategorySection(a = addCategoryViewModel)
                         } else {
                             AddCategorySection(
                                 a = addCategoryViewModel,

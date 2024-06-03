@@ -9,6 +9,7 @@ import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewMode
 import com.example.collectorapp.ui.screens.Authentication.SignIn.LoginInterface
 import com.example.collectorapp.ui.screens.Authentication.Signup.RegisterInterface
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
+import com.example.collectorapp.ui.screens.Categories.CategoriesHome
 import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
 import com.example.collectorapp.ui.screens.Items.AddItems.AddingItems
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
@@ -45,7 +46,7 @@ fun NavigateAuth(
             UserCategoryInput(addCategoryViewModel, navController = navController)
         }
         composable(route = "create_items"){
-            AddingItems(addItemsViewModel = addItemsViewModel)
+            AddingItems(addItemsViewModel = addItemsViewModel, addCategoryViewModel = addCategoryViewModel)
         }
         composable(route = "splash_screen"){
             SplashScreen(navController = navController)
@@ -56,6 +57,11 @@ fun NavigateAuth(
         }
         composable(route = "call_to_action"){
             CallToAction(navController = navController)
+        }
+
+        composable(route = "categories_home"){
+           CategoriesHome(addItemsViewModel = addItemsViewModel,
+               addCategoryViewModel = addCategoryViewModel)
         }
     }
 

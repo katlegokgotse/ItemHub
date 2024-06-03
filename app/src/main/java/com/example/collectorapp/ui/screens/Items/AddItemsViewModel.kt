@@ -4,7 +4,8 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.collectorapp.ui.screens.Categories.ItemCategory
+import com.example.collectorapp.ui.screens.Categories.Categories
+import com.example.collectorapp.ui.screens.Categories.CategoryList
 import kotlinx.coroutines.launch
 
 class AddItemsViewModel: ViewModel() {
@@ -37,7 +38,7 @@ class AddItemsViewModel: ViewModel() {
 }
 
 data class ItemInformation(
-    val itemCategory: List<ItemCategory> = mutableListOf(),
+    val itemCategory: List<CategoryList> = mutableListOf(),
     val itemName: String = "",
     val itemDescription: String = "",
     val itemBrand: String =  "",

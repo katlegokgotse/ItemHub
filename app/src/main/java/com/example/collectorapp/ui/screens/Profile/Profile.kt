@@ -47,9 +47,9 @@ fun Profile(a: AuthenticationViewModel, category: AddCategoryViewModel){
 @Composable
 fun ProfileHeader(a: AuthenticationViewModel){
     Row{
-        ProfilePicture(painter = painterResource(id = R.drawable.cto))
+        ProfilePicture(painter = painterResource(id = R.drawable.user))
         ProfileNameDetails(a)
-        Notification()
+      //  Notification()
     }
 }
 
@@ -72,7 +72,7 @@ fun MyItems(addCategoryViewModel: AddCategoryViewModel){
                     }
                 ) { category ->
                     if (category != null) {
-                        CategoryChips(category = addCategoryViewModel._categoryListState.value.categoryList.toString(),
+                        CategoryChips(category = addCategoryViewModel.fetchCategories().toString(),
                             onExecuteSearch = { /**/ }
                             )
                     } else {

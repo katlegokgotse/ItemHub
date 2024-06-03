@@ -1,5 +1,6 @@
 package com.example.collectorapp.ui.screens.Categories
 
+import CameraScreen
 import MyItems
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,10 +17,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.collectorapp.R
+import com.example.collectorapp.ui.composables.HeadingText
+import com.example.collectorapp.ui.screens.Authentication.Signup.authenticationViewModel
 import com.example.collectorapp.ui.screens.Categories.ui.theme.CollectorAppTheme
 import com.example.collectorapp.ui.screens.Items.AddItems.AddingItems
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
@@ -34,16 +38,16 @@ fun CategoriesHome(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Column(){
-            Image(painter = painterResource(id = R.drawable.ob2), contentDescription = null)
-            LazyColumn {
-                item {
-                    AddingItems(addItemsViewModel = addItemsViewModel)
-                }
-                item {
-                    MyItems(addCategoryViewModel = addCategoryViewModel)
-                }
+        Column {
+            Box(
+                modifier = Modifier.height(250.dp)
+            ){
+                Image(painter = painterResource(id = R.drawable.ob2),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth)
+                HeadingText(value = addCategoryViewModel._categoryState.value.categoryName)
+            }
+                    CameraScreen()
             }
         }
     }
-}

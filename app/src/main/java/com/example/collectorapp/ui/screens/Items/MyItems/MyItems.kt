@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,11 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,7 +43,7 @@ class AddItems : ComponentActivity() {
                 ) {
                     Column {
                         MyItemsCard(
-                            addItemsViewModel = addItemsViewModel,
+                            addItemsViewModel = addCategoryViewModel,
                             painter = painterResource(id = R.drawable.cto),
                             contentDescription = "Test",
                             title = "Add new Item",
@@ -64,7 +59,7 @@ class AddItems : ComponentActivity() {
 
 @Composable
 fun MyItemsCard(
-    addItemsViewModel: AddItemsViewModel,
+    addItemsViewModel: AddCategoryViewModel,
     painter: Painter, contentDescription: String,
     title: String, modifier: Modifier){
     Box(
@@ -92,36 +87,11 @@ fun MyItemsCard(
                             .padding(12.dp),
                         contentAlignment = Alignment.Center,
                     ){
-                        Text(text = addItemsViewModel._itemsState.value.itemName, color = Color.White)
+                        Text(text = addItemsViewModel._categoryState.value.categoryName, color = Color.White)
                     }
                 }
             }
-            Text(text = addItemsViewModel._itemsState.value.itemName,
-                color = Color.Black)
         }
     }
 
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun MyItemsPreview() {
-    CollectorAppTheme {
-        val a: AddItemsViewModel = AddItemsViewModel()
-        val ac: AddCategoryViewModel = AddCategoryViewModel()
-        MyItemsCard(
-            addItemsViewModel = a,
-            painter = painterResource(id = R.drawable.cto),
-            contentDescription = a._itemsState.value.itemDescription,
-            title = a._itemsState.value.itemName,
-            modifier = Modifier )
-        /*AddMyCategoryCard(
-            addCategoryViewModel = ac,
-            painter = painterResource(id = R.drawable.cto),
-            contentDescription = a._itemsState.value.itemDescription,
-            title = a._itemsState.value.itemName,
-            modifier = Modifier
-        ) { /**/ }*/
-    }
 }

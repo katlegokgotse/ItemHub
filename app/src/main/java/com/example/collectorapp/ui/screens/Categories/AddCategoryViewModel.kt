@@ -28,9 +28,7 @@ class AddCategoryViewModel: ViewModel() {
     }
 
     fun fetchCategories(){
-          viewModelScope.launch {
               _categoryListState.value = _categoryListState.value.copy(categoryList = _categoryListState.value.categoryList)
-          }
     }
 }
 data class Categories(

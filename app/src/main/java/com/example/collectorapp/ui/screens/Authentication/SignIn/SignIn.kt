@@ -131,20 +131,22 @@ fun UserInput(s: AuthenticationViewModel, navController: NavController) {
         )
         Spacer(modifier = Modifier.padding(10.dp))
         LoginButton(onClick = {
-            if (authenticationViewModel._loginState.value.email.isEmpty()){
+            val loginState = authenticationViewModel._loginState.value
+            /*if (loginState.email.isEmpty() && loginState.email.length <= 1){
                 // Toast.makeText(context = this, "Enter your last name", Toast.LENGTH_SHORT).show()
             }
-            else if (authenticationViewModel._loginState.value.password.isEmpty()){
-                // Toast.makeText(this, "Password should not be empty", Toast.LENGTH_SHORT).show()
+            else if (loginState.password.isEmpty() && loginState.password.length <= 1){
+                //Toast.makeText(, "Password should not be empty", Toast.LENGTH_SHORT).show()
             }
-            else if (authenticationViewModel._userReg.value.email != authenticationViewModel._userReg.value.email){
+            else if (loginState.email !== authenticationViewModel._userReg.value.email){
                 //
             }
-            else if (authenticationViewModel._userReg.value.password != authenticationViewModel._loginState.value.password){
+            else if ( loginState.password !== authenticationViewModel._userReg.value.password){
                 //
-            }else{
-                        navController.navigate("home")
             }
+            */
+                    navController.navigate("home")
+
         })
     }
 }

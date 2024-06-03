@@ -61,9 +61,12 @@ class AuthenticationViewModel: ViewModel(){
         listOfUsers.add(usersRegistration)
         _userList.value = _userList.value.copy(usersRegistration = listOfUsers)
     }
-    fun fetchUserInformation(email: String, password: String):Boolean{
+    fun fetchUserInformation(email: String, password: String){
         val user = _userList.value.usersRegistration.find { it.email == email && it.password == password }
-        return user != null
+        if (user != null){
+            Toast.makeText(LocalContext.current, "Login Successful", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(LocalContext.current, "Login Failed", Toast.LENGTH_SHORT).show()
     }
 }
 data class LoginScreen(

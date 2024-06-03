@@ -3,7 +3,6 @@ import Notification
 import Profile
 import Screens
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -52,6 +51,7 @@ import com.example.collectorapp.ui.theme.CollectorAppTheme
 class Main : ComponentActivity() {
     val signInViewModel: AuthenticationViewModel = AuthenticationViewModel()
     val addItemsViewModel: AddItemsViewModel = AddItemsViewModel()
+    val addCategoryViewModel: AddCategoryViewModel = AddCategoryViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -64,7 +64,7 @@ class Main : ComponentActivity() {
                     Column {
                         SearchBar(addItemsViewModel = addItemsViewModel)
                         MyBottomAppBar(signInViewModel, )
-                        CategorySection(addItemsViewModel)
+                        CategorySection(addCategoryViewModel)
                     }
                 }
             }
@@ -73,14 +73,15 @@ class Main : ComponentActivity() {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategorySection(a: AddItemsViewModel) {
+fun CategorySection(a: AddCategoryViewModel) {
     Column {
         Row {
             MyItemsCard(a,
                 painter = painterResource(id = R.drawable.cto),
-                contentDescription = a._itemsState.value.itemDescription,
-                title = a._itemsState.value.itemName,
+                contentDescription = a._categoryState.value.categoryName,
+                title = a._categoryState.value.categoryName,
                 modifier = Modifier.width(150.dp))
+
         }
     }
 }
@@ -159,7 +160,7 @@ fun MyBottomAppBar(signInViewModel: AuthenticationViewModel) {
                     contentAlignment = Alignment.Center
                 ){
                     FloatingActionButton(onClick = {
-                        navigationController.navigate("create_items")
+                        navigationController.navigate("create_category")
                     }) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = null, tint = Color.Red)
                     }
@@ -214,7 +215,7 @@ fun MyBottomAppBar(signInViewModel: AuthenticationViewModel) {
                 Search()
             }
             composable(Screens.Notification.screen){
-                Notification()
+                Notification(addCategoryViewModel = ac, navController = navigationController)
             }
             composable(Screens.Profile.screen){
                Profile(signInViewModel, ac)

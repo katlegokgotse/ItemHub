@@ -40,9 +40,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.collectorapp.R
+import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
+import com.example.collectorapp.ui.screens.Categories.CreateCategories
+import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
+import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 
 @Composable
-fun Notification(){
-    CameraScreen()
+fun Notification(addCategoryViewModel: AddCategoryViewModel, navController: NavController){
+  UserCategoryInput(addCategoryViewModel = addCategoryViewModel, navController = navController)
 }

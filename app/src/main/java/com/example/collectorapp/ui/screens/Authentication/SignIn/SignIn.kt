@@ -18,12 +18,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,24 +29,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.collectorapp.R
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.collectorapp.MyBottomAppBar
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
 import com.example.collectorapp.ui.screens.Authentication.SignIn.ui.theme.CollectorAppTheme
+import com.example.collectorapp.ui.screens.Authentication.Signup.RegisterInterface
+import com.example.collectorapp.ui.screens.Authentication.Signup.authenticationViewModel
+import com.example.collectorapp.ui.screens.Authentication.Signup.textState
+import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
+import com.example.collectorapp.ui.screens.Categories.AddNewCategories
+import com.example.collectorapp.ui.screens.Categories.CreateCategories
+import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
 
 class SignIn : ComponentActivity() {
+    var signInViewModel: AuthenticationViewModel = AuthenticationViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             CollectorAppTheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginInterface(navController)
+                    LoginInterface(signInViewModel, navController)
                 }
             }
         }
@@ -57,8 +67,7 @@ class SignIn : ComponentActivity() {
 }
 
 @Composable
-fun LoginInterface(navController: NavController) {
-    val signInViewModel: AuthenticationViewModel = viewModel()
+fun LoginInterface(s: AuthenticationViewModel, navController: NavController){
     Box {
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -66,12 +75,12 @@ fun LoginInterface(navController: NavController) {
             contentDescription = "Login",
             contentScale = ContentScale.Crop
         )
-        Components(signInViewModel, navController)
+        Components(s, navController)
     }
 }
 
 @Composable
-fun Components(signInViewModel: AuthenticationViewModel, navController: NavController) {
+fun Components(s: AuthenticationViewModel,  navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -96,49 +105,54 @@ fun Components(signInViewModel: AuthenticationViewModel, navController: NavContr
         Spacer(modifier = Modifier.padding(top = 20.dp))
         GoogleButton("Log into your account")
         Spacer(modifier = Modifier.padding(40.dp))
-        UserInput(signInViewModel, navController)
+        UserInput(s, navController)
     }
 }
 
 @Composable
-fun UserInput(signInViewModel: AuthenticationViewModel, navController: NavController) {
-    val context = LocalContext.current
-    val loginState by signInViewModel.loginState.collectAsState()
-
+fun UserInput(s: AuthenticationViewModel, navController: NavController) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = loginState.email,
-            onValueChange = { signInViewModel.updateUserEmail(it) },
-            label = { Text(text = "Email Address") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            value = s._loginState.value.email,
+            onValueChange = {s.updateUserEmail(it)},
+            label = { Text(text = "Email Address")},
         )
         Spacer(modifier = Modifier.padding(10.dp))
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = loginState.password,
-            onValueChange = { signInViewModel.updateUserPassword(it) },
-            label = { Text(text = "Password") },
+            value = s._loginState.value.password,
+            onValueChange = {s.updateUserPassword(it)},
+            label = { Text(text = "Password")},
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         Spacer(modifier = Modifier.padding(10.dp))
         LoginButton(onClick = {
-           // if (signInViewModel.fetchUserInformation(email = loginState.email, password = loginState.password)) {
-                navController.navigate("home")
-           // } else {
-           //     Toast.makeText(context, "Invalid email or password", Toast.LENGTH_SHORT).show()
-           // }
+            val loginState = authenticationViewModel._loginState.value
+            /*if (loginState.email.isEmpty() && loginState.email.length <= 1){
+                // Toast.makeText(context = this, "Enter your last name", Toast.LENGTH_SHORT).show()
+            }
+            else if (loginState.password.isEmpty() && loginState.password.length <= 1){
+                //Toast.makeText(, "Password should not be empty", Toast.LENGTH_SHORT).show()
+            }
+            else if (loginState.email !== authenticationViewModel._userReg.value.email){
+                //
+            }
+            else if ( loginState.password !== authenticationViewModel._userReg.value.password){
+                //
+            }
+            */
+                    navController.navigate("home")
+
         })
     }
 }
-
 @Composable
-fun LoginButton(onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
+fun LoginButton(onClick: () -> Unit){
+    Button(onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
@@ -146,26 +160,22 @@ fun LoginButton(onClick: () -> Unit) {
         Text(text = "Login")
     }
 }
-
 @Composable
-fun GoogleButton(text: String) {
-    Button(
-        onClick = { /* Implement Google login here */ },
+fun GoogleButton(text: String){
+    Button(onClick = { /*TODO*/ },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Text(
-            text = text,
-            textAlign = TextAlign.Center
-        )
+            .padding(5.dp)) {
+        Text(text = text,
+            textAlign = TextAlign.Center)
     }
 }
-
 @Preview(showSystemUi = true)
 @Composable
 fun GreetingPreview() {
-    CollectorAppTheme {
-        LoginInterface(rememberNavController())
+   CollectorAppTheme {
+       val signInViewModel: AuthenticationViewModel = AuthenticationViewModel()
+       //LoginInterface(signInViewModel)
     }
 }
+

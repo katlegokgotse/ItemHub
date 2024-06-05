@@ -21,7 +21,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -54,7 +53,7 @@ fun Home(s: AuthenticationViewModel,
                 Spacer(modifier = Modifier.height(20.dp))
                 SearchBar(addItemsViewModel = addItemsViewModel)
                 Spacer(modifier = Modifier.height(20.dp))
-                Text(text = "Welcome ${s.userReg.collectAsState().value.firstName} ${s.userReg.collectAsState().value.lastName}")
+                Text(text = "Welcome ${s._userReg.value.firstName} ${s._userReg.value.lastName}")
                 TextButton(onClick = {
                     navController.navigate("categories_home")
                 }) {

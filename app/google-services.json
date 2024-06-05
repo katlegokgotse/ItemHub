@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "275700271773",
+    "firebase_url": "https://itemhub-3b1c8-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "itemhub-3b1c8",
+    "storage_bucket": "itemhub-3b1c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275700271773:android:4c24cba41cf6c5e02fa274",
+        "android_client_info": {
+          "package_name": "com.example.collectorapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275700271773-27nio93dk1tpg2sqe527d29ao24kf766.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhd928ecBhDZ88sT7ErIqTlUhmRzQsCRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275700271773-27nio93dk1tpg2sqe527d29ao24kf766.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

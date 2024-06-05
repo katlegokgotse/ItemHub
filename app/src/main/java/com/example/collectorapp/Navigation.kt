@@ -34,7 +34,7 @@ fun NavigateAuth(
         startDestination = startDestination
     ){
         composable("login_interface"){
-            LoginInterface(signInViewModel, navController)
+            LoginInterface( navController = navController)
         }
         composable("registration_interface"){
             RegisterInterface(authenticationViewModel = signInViewModel, navController = navController)

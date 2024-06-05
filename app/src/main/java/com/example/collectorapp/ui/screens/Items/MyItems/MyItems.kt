@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -87,7 +88,7 @@ fun MyItemsCard(
                             .padding(12.dp),
                         contentAlignment = Alignment.Center,
                     ){
-                        Text(text = addItemsViewModel._categoryState.value.categoryName, color = Color.White)
+                        Text(text = addItemsViewModel._categoryState.collectAsState().value.categoryName, color = Color.White)
                     }
                 }
             }

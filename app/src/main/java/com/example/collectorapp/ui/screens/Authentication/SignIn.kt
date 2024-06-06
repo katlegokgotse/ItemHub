@@ -1,5 +1,7 @@
 package com.example.collectorapp.ui.screens.Authentication
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -84,15 +86,18 @@ fun UserInput(viewModel: AuthenticationViewModel, navController: NavController) 
         Spacer(modifier = Modifier.padding(10.dp))
         LoginButton(onClick = {
             val loginState = viewModel._loginState.value
-            val isAuthenticated = viewModel.fetchUserInformation(
+            viewModel.fetchUserInformation(
                 email = loginState.email,
                 password = loginState.password
-            )//This method returns a boolean from fetchUserInformation and tests it with what is in the list
-            if (isAuthenticated) {
-                navController.navigate("home")
-            } else {
-               /**/
-            }
+            ){
+                isAuthenticated ->
+                if (isAuthenticated){
+                    navController.navigate("home")
+                }else{
+                    Log.d(TAG, "Authentication failed")
+                }
+            }//This method returns a boolean from fetchUserInformation and tests it with what is in the list
+
         })
     }
 }

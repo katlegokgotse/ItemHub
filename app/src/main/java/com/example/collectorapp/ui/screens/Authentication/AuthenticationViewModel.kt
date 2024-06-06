@@ -91,11 +91,34 @@ class AuthenticationViewModel: ViewModel() {
                 }
         }
     }
+    private fun signInUser(
+        email: String, password: String,
+        onSuccess: (FirebaseUser?) -> Unit,
+        onFailure: (Exception?) -> Unit
+    ) {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener() { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success")
+                        val user = auth.currentUser
+                        onSuccess(user)
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                        onFailure(task.exception)
+                    }
+                }
+        }
         fun fetchUserInformation(
             email: String,
-            password: String
-        ): Boolean {
+            password: String,
+        ) {
             val userList = _userList.value
-            return userList.usersRegistration.any { it.email == email && it.password == password }
+            signInUser(email,
+                password,
+                onSuccess = { _ -> Log.d(TAG, "createUserWithEmail:success") },
+                onFailure = { _ -> Log.d(TAG, "createUserWithEmail:failure")})
+            //return userList.usersRegistration.any { it.email == email && it.password == password }
         }
     }

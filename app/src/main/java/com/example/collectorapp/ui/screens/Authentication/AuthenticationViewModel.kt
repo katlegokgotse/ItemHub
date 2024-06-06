@@ -1,12 +1,8 @@
 package com.example.collectorapp.ui.screens.Authentication
-import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.Navigation
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,15 +28,12 @@ class AuthenticationViewModel: ViewModel(){
                     .stateIn(
                         scope = viewModelScope,
                         started = SharingStarted.WhileSubscribed(5_000),
-                        initialValue = PasswordValidationState()
+                        initialValue = PasswordValidationState(hasMinimum = false)
                     )
             }
             _loginState.value = _loginState.value.copy(password = password)
-
         }
        }
-
-    //
     fun updateUserFirstName(firstName: String){
         _userReg.value = _userReg.value.copy(firstName = firstName)
     }
@@ -54,64 +47,17 @@ class AuthenticationViewModel: ViewModel(){
         _userReg.value = _userReg.value.copy(password = password)
     }
 
-
     fun addUserRegistrationList(usersRegistration: UserRegistration){
-        //
+        //This function takes the usersRegistration list and adds the new user into it
         val listOfUsers = _userList.value.usersRegistration.toMutableList()
         listOfUsers.add(usersRegistration)
         _userList.value = _userList.value.copy(usersRegistration = listOfUsers)
     }
-    fun fetchUserInformation(email: String, password: String){
-        val user = _userList.value.usersRegistration.find { it.email == email && it.password == password }
-        if (user != null){
-            Toast.makeText(LocalContext.current, "Login Successful", Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(LocalContext.current, "Login Failed", Toast.LENGTH_SHORT).show()
+    fun fetchUserInformation(
+        email: String,
+        password: String
+    ): Boolean{
+        val userList = _userList.value
+        return userList.usersRegistration.any{ it.email == email && it.password == password }
     }
 }
-data class LoginScreen(
-    val email: String = "",
-    val password: String = ""
-)
-data class PasswordValidationState(
-    val hasMininmum: Boolean = false,
-    val hasCapitalLetter: Boolean = false,
-    val hasSpecialCharacter: Boolean = false,
-    val successful: Boolean = false
-)
-class ValidatePassword{
-    fun execute(password: String): PasswordValidationState{
-        val isCapital = validateCapitalLetters(password)
-        val isSpecial = validateSpecialCharacter(password)
-        val isMinimum = validateMinimum(password)
-
-        val hasError = listOf(
-            isCapital, isSpecial, isMinimum
-        ).all { it }
-
-        return PasswordValidationState(
-            hasMininmum = isMinimum,
-            hasCapitalLetter = isCapital,
-            hasSpecialCharacter = isSpecial,
-            successful = hasError
-        )
-    }
-    private fun validateSpecialCharacter(password: String): Boolean =
-        password.contains(Regex("[^A-Za-z0-9 !@#\$%^&*()-_=+\\[\\]{}|;:'\",.<>/?]"))
-    private fun validateCapitalLetters(password: String): Boolean =
-        password.matches(Regex(".*[A-Z].*"))
-
-    private fun validateMinimum(password: String): Boolean =
-        password.matches(Regex(".{6,}"))
-}
-//Registration
-data class UserRegistration(
-    val firstName: String = "",
-    val lastName: String = "",
-    val email: String = "",
-    val password: String = ""
-)
-
-data class UserList(
-   val usersRegistration: List<UserRegistration> = mutableListOf()
-)

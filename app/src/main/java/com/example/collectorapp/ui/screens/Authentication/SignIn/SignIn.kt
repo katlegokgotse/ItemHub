@@ -5,22 +5,16 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,26 +23,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.collectorapp.R
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.collectorapp.MyBottomAppBar
+import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
 import com.example.collectorapp.ui.screens.Authentication.SignIn.ui.theme.CollectorAppTheme
-import com.example.collectorapp.ui.screens.Authentication.Signup.RegisterInterface
-import com.example.collectorapp.ui.screens.Authentication.Signup.authenticationViewModel
-import com.example.collectorapp.ui.screens.Authentication.Signup.textState
-import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
-import com.example.collectorapp.ui.screens.Categories.AddNewCategories
-import com.example.collectorapp.ui.screens.Categories.CreateCategories
-import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
 
 class SignIn : ComponentActivity() {
-    var signInViewModel: AuthenticationViewModel = AuthenticationViewModel()
+    private val signInViewModel: AuthenticationViewModel by lazy { AuthenticationViewModel() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -67,7 +52,7 @@ class SignIn : ComponentActivity() {
 }
 
 @Composable
-fun LoginInterface(s: AuthenticationViewModel, navController: NavController){
+fun LoginInterface(viewModel: AuthenticationViewModel, navController: NavController) {
     Box {
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -75,12 +60,12 @@ fun LoginInterface(s: AuthenticationViewModel, navController: NavController){
             contentDescription = "Login",
             contentScale = ContentScale.Crop
         )
-        Components(s, navController)
+        Components(viewModel, navController)
     }
 }
 
 @Composable
-fun Components(s: AuthenticationViewModel,  navController: NavController){
+fun Components(viewModel: AuthenticationViewModel, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -105,54 +90,50 @@ fun Components(s: AuthenticationViewModel,  navController: NavController){
         Spacer(modifier = Modifier.padding(top = 20.dp))
         GoogleButton("Log into your account")
         Spacer(modifier = Modifier.padding(40.dp))
-        UserInput(s, navController)
+        UserInput(viewModel, navController)
     }
 }
 
 @Composable
-fun UserInput(s: AuthenticationViewModel, navController: NavController) {
+fun UserInput(viewModel: AuthenticationViewModel, navController: NavController) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = s._loginState.value.email,
-            onValueChange = {s.updateUserEmail(it)},
-            label = { Text(text = "Email Address")},
+            value = viewModel._loginState.value.email,
+            onValueChange = { viewModel.updateUserEmail(it) },
+            label = { Text(text = "Email Address") },
         )
         Spacer(modifier = Modifier.padding(10.dp))
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = s._loginState.value.password,
-            onValueChange = {s.updateUserPassword(it)},
-            label = { Text(text = "Password")},
+            value = viewModel._loginState.value.password,
+            onValueChange = { viewModel.updateUserPassword(it) },
+            label = { Text(text = "Password") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         Spacer(modifier = Modifier.padding(10.dp))
         LoginButton(onClick = {
-            val loginState = authenticationViewModel._loginState.value
-            /*if (loginState.email.isEmpty() && loginState.email.length <= 1){
-                // Toast.makeText(context = this, "Enter your last name", Toast.LENGTH_SHORT).show()
+            val loginState = viewModel._loginState.value
+            val isAuthenticated = viewModel.fetchUserInformation(
+                email = loginState.email,
+                password = loginState.password
+            )
+            if (isAuthenticated) {
+                navController.navigate("home")
+            } else {
+               /**/
             }
-            else if (loginState.password.isEmpty() && loginState.password.length <= 1){
-                //Toast.makeText(, "Password should not be empty", Toast.LENGTH_SHORT).show()
-            }
-            else if (loginState.email !== authenticationViewModel._userReg.value.email){
-                //
-            }
-            else if ( loginState.password !== authenticationViewModel._userReg.value.password){
-                //
-            }
-            */
-                    navController.navigate("home")
-
         })
     }
 }
+
 @Composable
-fun LoginButton(onClick: () -> Unit){
-    Button(onClick = onClick,
+fun LoginButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
@@ -160,22 +141,28 @@ fun LoginButton(onClick: () -> Unit){
         Text(text = "Login")
     }
 }
+
 @Composable
-fun GoogleButton(text: String){
-    Button(onClick = { /*TODO*/ },
+fun GoogleButton(text: String) {
+    Button(
+        onClick = { /*TODO*/ },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)) {
-        Text(text = text,
-            textAlign = TextAlign.Center)
-    }
-}
-@Preview(showSystemUi = true)
-@Composable
-fun GreetingPreview() {
-   CollectorAppTheme {
-       val signInViewModel: AuthenticationViewModel = AuthenticationViewModel()
-       //LoginInterface(signInViewModel)
+            .padding(5.dp)
+    ) {
+        Text(
+            text = text,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
+@Preview(showSystemUi = true)
+@Composable
+fun GreetingPreview() {
+    CollectorAppTheme {
+        val signInViewModel = AuthenticationViewModel()
+        val navController = rememberNavController()
+        LoginInterface(signInViewModel, navController)
+    }
+}

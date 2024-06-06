@@ -46,10 +46,3 @@ class ValidatePassword{
     private fun validateMinimum(password: String): Boolean =
         password.matches(Regex(pattern = ".{6,}"))
 }
-
-sealed class SignInStatus {
-    object Idle : SignInStatus()
-    object Loading : SignInStatus()
-    object Success : SignInStatus()
-    data class Failure(val exception: Exception?) : SignInStatus()
-}

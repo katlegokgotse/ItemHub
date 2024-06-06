@@ -6,8 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
+import com.example.collectorapp.ui.screens.Authentication.LoginInterface
 import com.example.collectorapp.ui.screens.Authentication.RegisterInterface
-import com.example.collectorapp.ui.screens.Authentication.SignIn.LoginInterface
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Categories.CategoriesHome
 import com.example.collectorapp.ui.screens.Categories.UserCategoryInput

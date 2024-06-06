@@ -1,55 +1,22 @@
-package com.example.collectorapp.ui.screens.Authentication.SignIn
+package com.example.collectorapp.ui.screens.Authentication
 
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.collectorapp.R
-import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
-import com.example.collectorapp.ui.screens.Authentication.SignIn.ui.theme.CollectorAppTheme
-
-class SignIn : ComponentActivity() {
-    private val signInViewModel: AuthenticationViewModel by lazy { AuthenticationViewModel() }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val navController = rememberNavController()
-            CollectorAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    LoginInterface(signInViewModel, navController)
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun LoginInterface(viewModel: AuthenticationViewModel, navController: NavController) {
@@ -154,15 +121,5 @@ fun GoogleButton(text: String) {
             text = text,
             textAlign = TextAlign.Center
         )
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun GreetingPreview() {
-    CollectorAppTheme {
-        val signInViewModel = AuthenticationViewModel()
-        val navController = rememberNavController()
-        LoginInterface(signInViewModel, navController)
     }
 }

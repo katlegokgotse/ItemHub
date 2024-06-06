@@ -1,6 +1,5 @@
-package com.example.collectorapp.ui.screens.Authentication.Signup
+package com.example.collectorapp.ui.screens.Authentication
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,9 +13,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -29,9 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.collectorapp.R
-import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
-import com.example.collectorapp.ui.screens.Authentication.SignIn.GoogleButton
-import com.example.collectorapp.ui.screens.Authentication.UserRegistration
 
 val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
 val textState: MutableState<String> = mutableStateOf("")

@@ -21,21 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CollectorApp"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.screens.Categories.CategoriesHome"
-            android:exported="false"
-            android:label="@string/title_activity_categories_home"
-            android:theme="@style/Theme.CollectorApp" />
-        <activity
-            android:name=".ui.screens.Camera.Camera.CameraMainActivity"
-            android:exported="false"
-            android:label="@string/title_activity_camera_main"
-            android:theme="@style/Theme.CollectorApp" />
-        <activity
-            android:name=".ui.screens.Camera.CameraMainActivity"
-            android:exported="false"
-            android:label="@string/title_activity_camera_main"
-            android:theme="@style/Theme.CollectorApp" />
+
+
+
         <activity
             android:name=".ui.screens.Items.AddItems.AddItems"
             android:exported="false"
@@ -51,11 +39,7 @@
             android:exported="false"
             android:label="@string/title_activity_add_items"
             android:theme="@style/Theme.CollectorApp" />
-        <activity
-            android:name=".ui.screens.Authentication.SignIn.SignIn"
-            android:exported="false"
-            android:label="@string/title_activity_sign_in"
-            android:theme="@style/Theme.CollectorApp" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

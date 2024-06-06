@@ -87,7 +87,7 @@ fun UserInput(viewModel: AuthenticationViewModel, navController: NavController) 
             val isAuthenticated = viewModel.fetchUserInformation(
                 email = loginState.email,
                 password = loginState.password
-            )
+            )//This method returns a boolean from fetchUserInformation and tests it with what is in the list
             if (isAuthenticated) {
                 navController.navigate("home")
             } else {

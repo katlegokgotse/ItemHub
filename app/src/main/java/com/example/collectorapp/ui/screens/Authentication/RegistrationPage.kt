@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.collectorapp.R
+import com.example.collectorapp.ui.screens.Authentication.SignIn.GoogleButton
 
 val authenticationViewModel: AuthenticationViewModel = AuthenticationViewModel()
 val textState: MutableState<String> = mutableStateOf("")

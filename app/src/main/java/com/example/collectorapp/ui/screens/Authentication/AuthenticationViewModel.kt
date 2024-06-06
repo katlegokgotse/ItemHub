@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.compose.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,9 +12,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import com.google.firebase.auth.auth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class AuthenticationViewModel: ViewModel() {
     val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance()}
@@ -23,6 +19,7 @@ class AuthenticationViewModel: ViewModel() {
     val _userList = mutableStateOf(UserList())
     val _userReg = mutableStateOf(UserRegistration())
     val validatePassword: ValidatePassword = ValidatePassword()
+    var signInStatus = mutableStateOf<SignInStatus>(SignInStatus.Idle)
 
     fun updateUserEmail(email: String) {
         _loginState.value = _loginState.value.copy(email = email)
@@ -91,11 +88,43 @@ class AuthenticationViewModel: ViewModel() {
                 }
         }
     }
+
+    private fun signUserIn(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onFailure: (Exception?) -> Unit
+    ){
+        viewModelScope.launch {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(){
+                task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    Log.d(TAG, "signInWithEmail:success")
+                    onSuccess()
+                }else {
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    onFailure(task.exception)
+            }
+            }
+        }
+    }
         fun fetchUserInformation(
             email: String,
             password: String
-        ): Boolean {
+        ) {
             val userList = _userList.value
-            return userList.usersRegistration.any { it.email == email && it.password == password }
+            val userExist =  (userList.usersRegistration.any { it.email == email && it.password == password })
+            if (!userExist){
+                return
+            }
+            signUserIn(
+                email = email,
+                password = password,
+                onSuccess = {Log.d(TAG, "createUserWithEmail:success") },
+                onFailure = { _ -> Log.d(TAG, "createUserWithEmail:failure")}
+            )
+
         }
     }

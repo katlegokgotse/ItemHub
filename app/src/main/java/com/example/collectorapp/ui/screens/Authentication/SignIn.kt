@@ -1,13 +1,15 @@
-package com.example.collectorapp.ui.screens.Authentication
+package com.example.collectorapp.ui.screens.Authentication.SignIn
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -17,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.collectorapp.R
+import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
+import com.example.collectorapp.ui.screens.Authentication.SignInStatus
 
 @Composable
 fun LoginInterface(viewModel: AuthenticationViewModel, navController: NavController) {
@@ -63,6 +67,10 @@ fun Components(viewModel: AuthenticationViewModel, navController: NavController)
 
 @Composable
 fun UserInput(viewModel: AuthenticationViewModel, navController: NavController) {
+    val context = LocalContext.current
+
+    val signInStatus by viewModel.signInStatus
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -70,7 +78,7 @@ fun UserInput(viewModel: AuthenticationViewModel, navController: NavController) 
             modifier = Modifier.fillMaxWidth(),
             value = viewModel._loginState.value.email,
             onValueChange = { viewModel.updateUserEmail(it) },
-            label = { Text(text = "Email Address") },
+            label = { Text(text = "Email Address") }
         )
         Spacer(modifier = Modifier.padding(10.dp))
         OutlinedTextField(
@@ -83,17 +91,27 @@ fun UserInput(viewModel: AuthenticationViewModel, navController: NavController) 
         )
         Spacer(modifier = Modifier.padding(10.dp))
         LoginButton(onClick = {
-            val loginState = viewModel._loginState.value
-            val isAuthenticated = viewModel.fetchUserInformation(
-                email = loginState.email,
-                password = loginState.password
-            )//This method returns a boolean from fetchUserInformation and tests it with what is in the list
-            if (isAuthenticated) {
-                navController.navigate("home")
-            } else {
-               /**/
-            }
+            viewModel.fetchUserInformation(
+                email = viewModel._loginState.value.email,
+                password = viewModel._loginState.value.password
+            )
         })
+
+        when (signInStatus) {
+            is SignInStatus.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+            }
+            is SignInStatus.Success -> {
+                Toast.makeText(context, "Sign-In Successful", Toast.LENGTH_SHORT).show()
+                navController.navigate("home")
+            }
+            is SignInStatus.Failure -> {
+                val exception = (signInStatus as SignInStatus.Failure).exception
+                Toast.makeText(context, "Sign-In Failed: ${exception?.message}", Toast.LENGTH_SHORT).show()
+            }
+
+            SignInStatus.Idle -> TODO()
+        }
     }
 }
 
@@ -123,3 +141,4 @@ fun GoogleButton(text: String) {
         )
     }
 }
+

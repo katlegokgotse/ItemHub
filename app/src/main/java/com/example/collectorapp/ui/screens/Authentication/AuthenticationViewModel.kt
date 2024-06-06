@@ -15,10 +15,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 
 class AuthenticationViewModel: ViewModel() {
     val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance()}
+    val database: FirebaseDatabase by lazy { FirebaseDatabase.getInstance() }
     val _loginState = mutableStateOf(LoginScreen())
     val _userList = mutableStateOf(UserList())
     val _userReg = mutableStateOf(UserRegistration())
@@ -90,6 +93,11 @@ class AuthenticationViewModel: ViewModel() {
                     }
                 }
         }
+    }
+    fun writeNewUser(userId: String, name: String, email: String) {
+        val user = User(name, email)
+
+        database.child("users").child(userId).setValue(user)
     }
     private fun signInUser(
         email: String, password: String,

@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.compose.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,11 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import com.google.firebase.auth.auth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.auth.User
-import com.google.firebase.ktx.Firebase
 
 class AuthenticationViewModel: ViewModel() {
     val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance()}
@@ -72,11 +67,21 @@ class AuthenticationViewModel: ViewModel() {
            email = usersRegistration.email,
            password = usersRegistration.password,
            onSuccess = { _ -> Log.d(TAG, "createUserWithEmail:success") },
-           onFailure = { _ -> Log.d(TAG, "createUserWithEmail:failure")})
+           onFailure = { _ -> Log.d(TAG, "createUserWithEmail:failure")}
+       )
+        addUserToDatabase(
+            userId = auth.currentUser!!.uid,
+            name = usersRegistration.lastName,
+            lastName = usersRegistration.lastName,
+            email = usersRegistration.email,
+            password = usersRegistration.password
+        ) //Creating the database instance in firebase database
+
     }
 
     private fun createUser(
         email: String, password: String,
+
         onSuccess: (FirebaseUser?) -> Unit,
         onFailure: (Exception?) -> Unit
     ) {
@@ -94,8 +99,8 @@ class AuthenticationViewModel: ViewModel() {
                 }
         }
     }
-    fun writeNewUser(userId: String, name: String, email: String) {
-        val user = User(name, email)
+    fun addUserToDatabase(userId: String, name: String, lastName: String, email: String, password: String) {
+        val user = UserRegistration(firstName = name, lastName = lastName, email = email, password = password)
         database.reference.child("users").child(userId).setValue(user)
     }
     private fun signInUser(
@@ -120,6 +125,7 @@ class AuthenticationViewModel: ViewModel() {
         fun fetchUserInformation(
             email: String,
             password: String,
+            function: () -> Nothing,
         ) {
             val userList = _userList.value
             signInUser(email,

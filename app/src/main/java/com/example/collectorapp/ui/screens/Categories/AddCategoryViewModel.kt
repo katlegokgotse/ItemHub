@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.collectorapp.ui.screens.Items.ItemInformation
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class AddCategoryViewModel: ViewModel() {
     val _categoryState = mutableStateOf(Categories())
@@ -17,8 +18,8 @@ class AddCategoryViewModel: ViewModel() {
     fun updateCategoryLocation(_categoryLocation: String) {
         _categoryState.value = _categoryState.value.copy(categoryLocation = _categoryLocation)
     }
-    fun updateCategoryCreation(_creationDate: String) {
-        _categoryState.value = _categoryState.value.copy(categoryCreated = _creationDate)
+    fun updateCategoryCreation() {
+        _categoryState.value = _categoryState.value.copy(categoryCreated = Date())
     }
 
     fun saveCategory(categories: Categories){
@@ -34,7 +35,7 @@ class AddCategoryViewModel: ViewModel() {
 data class Categories(
     val categoryName: String = "",
     val categoryLocation: String = "",
-    val categoryCreated: String = ""
+    val categoryCreated: Date = Date()
 )
 
 data class CategoryList(

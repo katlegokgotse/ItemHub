@@ -43,25 +43,6 @@ import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Authentication.UserRegistration
 import com.example.collectorapp.ui.screens.Categories.ui.theme.CollectorAppTheme
 
-class CreateCategories : ComponentActivity() {
-    private val addCategoryViewModel = AddCategoryViewModel() // Initialize your ViewModel
-  //  private val navController  = rememberNavController() // Initialize your NavController
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            CollectorAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-
-                }
-            }
-        }
-    }
-}
-
 @Composable
 fun AddNewCategories(addCategoryViewModel: AddCategoryViewModel, navController: NavController){
     Box(modifier = Modifier.padding(40.dp)){
@@ -119,18 +100,6 @@ fun UserCategoryInput(addCategoryViewModel: AddCategoryViewModel, navController:
                     onValueChange = {addCategoryViewModel.updateCategoryLocation(it)},
                     label = { Text(text = "Enter Category Location")}
                 )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ){
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        value = addCategoryViewModel._categoryState.value.categoryCreated,
-                        onValueChange = {addCategoryViewModel.updateCategoryCreation(it)},
-                        label = { Text(text = "Enter Category Release")}
-                    )
-                }
             }
 
         }
@@ -180,9 +149,4 @@ fun AddMyCategoryCard(
             Text(text = addCategoryViewModel._categoryState.value.categoryName)
         }
     }
-}
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview3() {
-    //AddNewCategories()
 }

@@ -60,48 +60,49 @@ fun AddNewCategories(addCategoryViewModel: AddCategoryViewModel, navController: 
         }
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserCategoryInput(addCategoryViewModel: AddCategoryViewModel, navController: NavController){
-    Column(){
-        Row(){
-
-            // Optional actions for the app bar
-            Button(onClick = {
-                val newCategory = Categories(
-                    addCategoryViewModel._categoryState.value.categoryName,
-                    addCategoryViewModel._categoryState.value.categoryLocation,
-                    addCategoryViewModel._categoryState.value.categoryCreated
-                )
-                addCategoryViewModel.saveCategory(newCategory)
-                navController.navigate("home")
-            }
+fun UserCategoryInput(addCategoryViewModel: AddCategoryViewModel, navController: NavController) {
+    Box() {
+        Column {
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .fillMaxHeight()
             ) {
-                Text(text = "Save")
-            }
-        }
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .fillMaxHeight()
-        ){
-            Column(
-                modifier = Modifier.padding(40.dp)
-            ){
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = addCategoryViewModel._categoryState.value.categoryName,
-                    onValueChange = {addCategoryViewModel.updateCategoryName(it)},
-                    label = { Text(text = "Enter Category Name")}
-                )
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = addCategoryViewModel._categoryState.value.categoryLocation,
-                    onValueChange = {addCategoryViewModel.updateCategoryLocation(it)},
-                    label = { Text(text = "Enter Category Location")}
-                )
-            }
+                Column(
+                    modifier = Modifier.padding(40.dp)
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = addCategoryViewModel._categoryState.value.categoryName,
+                        onValueChange = { addCategoryViewModel.updateCategoryName(it) },
+                        label = { Text(text = "Enter Category Name") }
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = addCategoryViewModel._categoryState.value.categoryLocation,
+                        onValueChange = { addCategoryViewModel.updateCategoryLocation(it) },
+                        label = { Text(text = "Enter Category Location") }
+                    )
+                    // Optional actions for the app bar
+                    Button(
+                        onClick = {
+                            val newCategory = Categories(
+                                addCategoryViewModel._categoryState.value.categoryName,
+                                addCategoryViewModel._categoryState.value.categoryLocation,
+                                addCategoryViewModel._categoryState.value.categoryCreated
+                            )
+                            addCategoryViewModel.saveCategory(newCategory)
+                            navController.navigate("home")
+                        }
+                    ) {
+                        Text(text = "Save")
+                    }
+                }
 
+            }
         }
     }
 }

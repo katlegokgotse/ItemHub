@@ -21,6 +21,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -41,6 +44,11 @@ fun Home(s: AuthenticationViewModel,
          addItemsViewModel: AddItemsViewModel,
          addCategoryViewModel: AddCategoryViewModel,
          navController: NavController) {
+    val userName by s.userName.observeAsState("Loading")
+
+    LaunchedEffect(Unit) {
+        s.displayUserName()
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
@@ -53,7 +61,7 @@ fun Home(s: AuthenticationViewModel,
                 Spacer(modifier = Modifier.height(20.dp))
                 SearchBar(addItemsViewModel = addItemsViewModel)
                 Spacer(modifier = Modifier.height(20.dp))
-                Text(text = "Welcome ${s._userReg.value.firstName} ${s._userReg.value.lastName}")
+                Text(text = "Welcome ${userName}")
                 TextButton(onClick = {
                     navController.navigate("categories_home")
                 }) {

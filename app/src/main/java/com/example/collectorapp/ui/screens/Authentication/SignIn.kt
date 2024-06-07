@@ -83,19 +83,16 @@ fun UserInput(viewModel: AuthenticationViewModel, navController: NavController) 
         )
         Spacer(modifier = Modifier.padding(10.dp))
         LoginButton(onClick = {
-            val loginState = viewModel._loginState.value
-            viewModel.fetchUserInformation(
-                email = loginState.email,
-                password = loginState.password
-            ){
-                TODO("")
+
+                navController.navigate("home")
+
                 /* isAuthenticated ->
                 if (isAuthenticated){
-                    navController.navigate("home")
+
                 }else{
                     Log.d(TAG, "Authentication failed")
                 }*/
-            }//This method returns a boolean from fetchUserInformation and tests it with what is in the list
+            //This method returns a boolean from fetchUserInformation and tests it with what is in the list
 
         })
     }

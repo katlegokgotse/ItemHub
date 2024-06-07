@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
-import com.example.collectorapp.ui.screens.Categories.CreateCategories
 import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 

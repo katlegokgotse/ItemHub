@@ -45,7 +45,7 @@ import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewMode
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Home.Home
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
-import com.example.collectorapp.ui.screens.Items.MyItems.MyItemsCard
+import com.example.collectorapp.ui.screens.Items.MyItemsCard
 import com.example.collectorapp.ui.screens.Search.Search
 import com.example.collectorapp.ui.theme.CollectorAppTheme
 class Main : ComponentActivity() {

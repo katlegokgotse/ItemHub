@@ -1,4 +1,4 @@
-package com.example.collectorapp.ui.screens.Items.AddItems
+package com.example.collectorapp.ui.screens.Items
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -34,9 +34,6 @@ import androidx.compose.ui.unit.dp
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Items.AddItems.ui.theme.CollectorAppTheme
-import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
-import com.example.collectorapp.ui.screens.Items.ItemInformation
-import com.example.collectorapp.ui.screens.Items.MyItems.MyItemsCard
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 class AddItems : ComponentActivity() {

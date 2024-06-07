@@ -11,7 +11,7 @@ import com.example.collectorapp.ui.screens.Authentication.RegisterInterface
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Categories.CategoriesHome
 import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
-import com.example.collectorapp.ui.screens.Items.AddItems.AddingItems
+import com.example.collectorapp.ui.screens.Items.AddingItems
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 import com.example.collectorapp.ui.screens.Startup.CTA.CallToAction
 import com.example.collectorapp.ui.screens.Startup.Onboarding.OnBoarding

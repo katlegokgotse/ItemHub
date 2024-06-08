@@ -83,7 +83,8 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.accompanist.pager)
 
-        implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.coil.compose)
 
 
         //Import the BoM for the Firebase platform

@@ -45,6 +45,7 @@ import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewMode
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Home.Home
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
+import com.example.collectorapp.ui.screens.Items.MyCategoryCard
 import com.example.collectorapp.ui.screens.Items.MyItemsCard
 import com.example.collectorapp.ui.screens.Search.Search
 import com.example.collectorapp.ui.theme.CollectorAppTheme
@@ -76,7 +77,7 @@ class Main : ComponentActivity() {
 fun CategorySection(a: AddCategoryViewModel) {
     Column {
         Row {
-            MyItemsCard(a,
+            MyCategoryCard(a,
                 painter = painterResource(id = R.drawable.cto),
                 contentDescription = a._categoryState.value.categoryName,
                 title = a._categoryState.value.categoryName,

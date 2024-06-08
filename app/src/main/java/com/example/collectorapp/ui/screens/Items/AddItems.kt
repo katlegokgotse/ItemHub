@@ -115,7 +115,7 @@ fun CaptureImageSection(
         }
         MyItemsCard(
             addItemsViewModel = addCategoryViewModel,
-            painter = painterResource(id = R.drawable.cto),
+            imageUri = photoUri ,
             contentDescription = addItemsViewModel.itemsState.value!!.itemDescription,
             title = addItemsViewModel.itemsState.value!!.itemName,
             modifier = Modifier.width(150.dp)

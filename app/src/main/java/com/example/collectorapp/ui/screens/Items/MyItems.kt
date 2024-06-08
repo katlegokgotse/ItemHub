@@ -1,5 +1,6 @@
 package com.example.collectorapp.ui.screens.Items
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,11 +24,51 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 
 @Composable
 fun MyItemsCard(
+    addItemsViewModel: AddCategoryViewModel,
+    imageUri: Uri?,
+    contentDescription: String,
+    title: String, modifier: Modifier){
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.5f)
+            .padding(16.dp)
+    ){
+        Column {
+            Card(
+                modifier = modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(50.dp),
+                //elevation = 5.dp
+            ){
+                Box(
+                    modifier = Modifier.height(200.dp)
+                ){
+                    Image(
+                        painter = rememberAsyncImagePainter(model = imageUri),
+                        contentDescription = contentDescription,
+                        contentScale = ContentScale.Crop
+                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(12.dp),
+                        contentAlignment = Alignment.Center,
+                    ){
+                        Text(text = addItemsViewModel._categoryState.value.categoryName, color = Color.White)
+                    }
+                }
+            }
+        }
+    }
+
+}
+@Composable
+fun MyCategoryCard(
     addItemsViewModel: AddCategoryViewModel,
     painter: Painter, contentDescription: String,
     title: String, modifier: Modifier){

@@ -25,35 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
-import com.example.collectorapp.ui.screens.Items.ui.theme.CollectorAppTheme
-
-class AddItems : ComponentActivity() {
-    private val addCategoryViewModel: AddCategoryViewModel = AddCategoryViewModel()
-    private val addItemsViewModel: AddItemsViewModel = AddItemsViewModel()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            CollectorAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Column {
-                        MyItemsCard(
-                            addItemsViewModel = addCategoryViewModel,
-                            painter = painterResource(id = R.drawable.cto),
-                            contentDescription = "Test",
-                            title = "Add new Item",
-                            modifier = Modifier
-                        )
-                    }
-
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun MyItemsCard(

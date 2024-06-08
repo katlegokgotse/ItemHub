@@ -100,7 +100,7 @@ fun AddCategorySection(a: AddCategoryViewModel, navController: NavController, on
 @Composable
 fun SearchBar(addItemsViewModel: AddItemsViewModel){
     Column {
-        OutlinedTextField(value = addItemsViewModel._itemsState.value.itemName,
+        OutlinedTextField(value = addItemsViewModel.itemsState.value!!.itemName,
             onValueChange = {addItemsViewModel.updateItemName(it) },
             label = { Text("Search for Item")}
         )

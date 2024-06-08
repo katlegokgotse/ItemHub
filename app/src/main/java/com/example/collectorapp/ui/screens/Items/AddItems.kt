@@ -1,8 +1,4 @@
 package com.example.collectorapp.ui.screens.Items
-
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,41 +18,24 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
-import com.example.collectorapp.ui.screens.Items.AddItems.ui.theme.CollectorAppTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 
-class AddItems : ComponentActivity() {
-    val addItemsViewModel: AddItemsViewModel = AddItemsViewModel()
-    val addCategoryViewModel: AddCategoryViewModel = AddCategoryViewModel()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            CollectorAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    AddingItems(addItemsViewModel, addCategoryViewModel = addCategoryViewModel)
-                }
-            }
-        }
-    }
-}
 
 @Composable
-fun AddingItems(addItemsViewModel: AddItemsViewModel, addCategoryViewModel: AddCategoryViewModel){
+fun AddingItems(addItemsViewModel: AddItemsViewModel,
+                addCategoryViewModel: AddCategoryViewModel){
+    val context = LocalContext.current
     Box(modifier = Modifier.padding(40.dp)){
 
         LazyColumn {
@@ -69,8 +48,8 @@ fun AddingItems(addItemsViewModel: AddItemsViewModel, addCategoryViewModel: AddC
                         MyItemsCard(
                             addItemsViewModel = addCategoryViewModel,
                             painter = painterResource(id = R.drawable.cto),
-                            contentDescription = addItemsViewModel._itemsState.value.itemDescription,
-                            title = addItemsViewModel._itemsState.value.itemName,
+                            contentDescription = addItemsViewModel.itemsState.value!!.itemDescription,
+                            title = addItemsViewModel.itemsState.value!!.itemName,
                             modifier = Modifier.width(150.dp))
                     }
                 }
@@ -104,11 +83,11 @@ fun AddItemsTopSection(onSave: () -> Unit = {}, onCancel: () -> Unit = {}, addIt
         TextButton(
             onClick = {
                 val newItems = ItemInformation(
-                    itemName = addItemsViewModel._itemsState.value.itemName,
-                    itemBrand = addItemsViewModel._itemsState.value.itemBrand,
-                    itemDescription = addItemsViewModel._itemsState.value.itemDescription,
-                    yearOfAcquisition = addItemsViewModel._itemsState.value.yearOfAcquisition,
-                    itemCategory = addItemsViewModel._itemsState.value.itemCategory,
+                    itemName = addItemsViewModel.itemsState.value!!.itemName,
+                    itemBrand = addItemsViewModel.itemsState.value!!.itemBrand,
+                    itemDescription = addItemsViewModel.itemsState.value!!.itemDescription,
+                    yearOfAcquisition = addItemsViewModel.itemsState.value!!.yearOfAcquisition,
+                    itemCategory = addItemsViewModel.itemsState.value!!.itemCategory,
                 )
                       val saveValue = addItemsViewModel.saveItem(newItems)
             },
@@ -128,13 +107,13 @@ fun UserItemsInput(addItemsViewModel: AddItemsViewModel){
     ){
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = addItemsViewModel._itemsState.value.itemName,
+            value = addItemsViewModel.itemsState.value!!.itemName,
             onValueChange = {addItemsViewModel.updateItemName(it)},
             label = { Text(text = "Enter Item Name")}
         )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = addItemsViewModel._itemsState.value.itemBrand,
+            value = addItemsViewModel.itemsState.value!!.itemBrand,
             onValueChange = {addItemsViewModel.updateBrand(it)},
             label = { Text(text = "Enter Item Brand")}
         )
@@ -147,14 +126,14 @@ fun UserItemsInput(addItemsViewModel: AddItemsViewModel){
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
-                value = addItemsViewModel._itemsState.value.itemDescription,
+                value = addItemsViewModel.itemsState.value!!.itemDescription,
                 onValueChange = {addItemsViewModel.updateDescription(it)},
                 label = { Text(text = "Enter Item Description")}
             )
         }
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = addItemsViewModel._itemsState.value.yearOfAcquisition,
+            value = addItemsViewModel.itemsState.value!!.yearOfAcquisition,
             onValueChange = {addItemsViewModel.updateYOA(it)},
             label = { Text(text = "Enter Item Name")}
         )

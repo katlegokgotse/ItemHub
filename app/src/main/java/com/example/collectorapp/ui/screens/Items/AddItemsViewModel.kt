@@ -21,10 +21,9 @@ import java.util.Locale
 import java.util.Objects
 
 class AddItemsViewModel: ViewModel() {
-    private val _itemsState = MutableLiveData<ItemInformation>()
+    private val _itemsState = MutableLiveData<ItemInformation>(ItemInformation())
     val itemsState: LiveData<ItemInformation> = _itemsState
     val _itemsList = mutableStateOf(ItemList())
-    val itemsList: ItemList get() = _itemsList.value
 
     fun updateItemName(itemName: String){
         _itemsState.value = _itemsState.value!!.copy(itemName = itemName)

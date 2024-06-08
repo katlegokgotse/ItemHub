@@ -33,7 +33,8 @@ fun MyItemsCard(
     addItemsViewModel: AddCategoryViewModel,
     imageUri: Uri?,
     contentDescription: String,
-    title: String, modifier: Modifier){
+    title: String,
+    modifier: Modifier){
     Box(
         modifier = Modifier
             .fillMaxWidth(0.5f)
@@ -48,18 +49,20 @@ fun MyItemsCard(
                 Box(
                     modifier = Modifier.height(200.dp)
                 ){
-                    Image(
-                        painter = rememberAsyncImagePainter(model = imageUri),
-                        contentDescription = contentDescription,
-                        contentScale = ContentScale.Crop
-                    )
+                    imageUri?.let {
+                        Image(
+                            painter = rememberAsyncImagePainter(model = imageUri),
+                            contentDescription = contentDescription,
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(12.dp),
                         contentAlignment = Alignment.Center,
                     ){
-                        Text(text = addItemsViewModel._categoryState.value.categoryName, color = Color.White)
+                       // Text(text = addItemsViewModel._categoryState.value.categoryName, color = Color.White)
                     }
                 }
             }

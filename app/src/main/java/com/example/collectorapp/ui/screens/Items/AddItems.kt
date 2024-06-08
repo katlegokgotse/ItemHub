@@ -68,7 +68,7 @@ fun AddingItems(
         }
     }
 
-    Box(modifier = Modifier.padding(40.dp)) {
+    Box(modifier = Modifier.padding(40.dp).fillMaxSize()) {
         LazyColumn {
             item {
                 CaptureImageSection(
@@ -76,13 +76,15 @@ fun AddingItems(
                     addCategoryViewModel = addCategoryViewModel,
                     photoUri = photoUri,
                     permissionLauncher = permissionLauncher,
-                    cameraLauncher = cameraLauncher
+                    cameraLauncher = cameraLauncher,
                 )
             }
             item {
                 UserItemsInput(addItemsViewModel = addItemsViewModel)
                 Button(onClick = {
-                        addItemsViewModel.saveItem(itemInformation)
+                    itemInformation.let {
+                        addItemsViewModel.saveItem(it)
+                    }
                 }) {
                     Text(text = "Save")
                 }
@@ -106,7 +108,7 @@ fun CaptureImageSection(
                 context, android.Manifest.permission.CAMERA
             )
             if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                cameraLauncher.launch(photoUri)
+                    cameraLauncher.launch(photoUri)
             } else {
                 permissionLauncher.launch(android.Manifest.permission.CAMERA)
             }
@@ -116,9 +118,9 @@ fun CaptureImageSection(
         MyItemsCard(
             addItemsViewModel = addCategoryViewModel,
             imageUri = photoUri ,
-            contentDescription = addItemsViewModel.itemsState.value!!.itemDescription,
-            title = addItemsViewModel.itemsState.value!!.itemName,
-            modifier = Modifier.width(150.dp)
+            contentDescription = addItemsViewModel.itemsState.value!!.itemDescription ?: "",
+            title = addItemsViewModel.itemsState.value!!.itemName ?: "",
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

@@ -30,12 +30,16 @@ import androidx.compose.ui.unit.dp
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
 fun AddingItems(addItemsViewModel: AddItemsViewModel,
                 addCategoryViewModel: AddCategoryViewModel){
     val context = LocalContext.current
+    val file = addItemsViewModel.createImageFile(context)
+    val photoUri = addItemsViewModel.getUriForFile(context, file)
+    val itemInformation by addItemsViewModel.itemsState.collectAsStateWithLifecycle()
     Box(modifier = Modifier.padding(40.dp)){
 
         LazyColumn {

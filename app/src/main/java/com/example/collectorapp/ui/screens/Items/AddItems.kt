@@ -1,4 +1,7 @@
 package com.example.collectorapp.ui.screens.Items
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +24,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
@@ -39,28 +43,47 @@ fun AddingItems(addItemsViewModel: AddItemsViewModel,
     val context = LocalContext.current
     val file = addItemsViewModel.createImageFile(context)
     val photoUri = addItemsViewModel.getUriForFile(context, file)
-    val itemInformation by addItemsViewModel.itemsState.collectAsStateWithLifecycle()
+    val itemInformation by addItemsViewModel.itemsState.observeAsState()
+
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
+        success -> if (success) {
+            addItemsViewModel.handleCaptureImage(context, photoUri)
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
+            cameraLauncher.launch(photoUri)
+        } else {
+            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+        }
+    }
     Box(modifier = Modifier.padding(40.dp)){
 
         LazyColumn {
             item {
                 LazyRow {
-                    item {
-                       AddingItems(addItemsViewModel = addItemsViewModel, addCategoryViewModel = addCategoryViewModel)
-                    }
                     item{
                         MyItemsCard(
                             addItemsViewModel = addCategoryViewModel,
                             painter = painterResource(id = R.drawable.cto),
                             contentDescription = addItemsViewModel.itemsState.value!!.itemDescription,
                             title = addItemsViewModel.itemsState.value!!.itemName,
-                            modifier = Modifier.width(150.dp))
+                            modifier = Modifier.width(150.dp)
+                        )
                     }
                 }
             }
             item {
                 UserItemsInput(addItemsViewModel = addItemsViewModel)
-                    Button(onClick = { /**/ }) {
+                    Button(onClick = {
+                        itemInformation?.let {
+                            addItemsViewModel.saveItem(it)
+                        }
+                    }) {
                         Text(text = "Save")
                 }
             }
@@ -92,8 +115,10 @@ fun AddItemsTopSection(onSave: () -> Unit = {}, onCancel: () -> Unit = {}, addIt
                     itemDescription = addItemsViewModel.itemsState.value!!.itemDescription,
                     yearOfAcquisition = addItemsViewModel.itemsState.value!!.yearOfAcquisition,
                     itemCategory = addItemsViewModel.itemsState.value!!.itemCategory,
+                    itemImage = addItemsViewModel.itemsState.value!!.itemImage
                 )
-                      val saveValue = addItemsViewModel.saveItem(newItems)
+                addItemsViewModel.saveItem(newItems)
+                onSave()
             },
             modifier = Modifier.align(Alignment.CenterEnd),
             contentPadding = PaddingValues(0.dp)

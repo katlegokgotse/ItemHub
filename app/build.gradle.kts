@@ -83,6 +83,9 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.accompanist.pager)
 
+        implementation(libs.androidx.lifecycle.runtime.compose)
+
+
         //Import the BoM for the Firebase platform
       implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
 

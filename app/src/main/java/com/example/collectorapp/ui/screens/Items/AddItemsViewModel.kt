@@ -24,6 +24,7 @@ class AddItemsViewModel: ViewModel() {
     private val _itemsState = MutableLiveData<ItemInformation>()
     val itemsState: LiveData<ItemInformation> = _itemsState
     val _itemsList = mutableStateOf(ItemList())
+    val itemsList: ItemList get() = _itemsList.value
 
     fun updateItemName(itemName: String){
         _itemsState.value = _itemsState.value!!.copy(itemName = itemName)

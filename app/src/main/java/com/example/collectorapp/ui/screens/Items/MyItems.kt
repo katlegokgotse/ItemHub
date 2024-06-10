@@ -49,12 +49,18 @@ fun MyItemsCard(
                 Box(
                     modifier = Modifier.height(200.dp)
                 ){
-                    imageUri?.let {
+                    imageUri?.let {imageUri ->
                         Image(
-                            painter = rememberAsyncImagePainter(model = imageUri),
+                            painter = rememberAsyncImagePainter(imageUri),
                             contentDescription = contentDescription,
                             contentScale = ContentScale.Crop
                         )
+                    }?:
+                        run{
+                            Image(
+                                painter = painterResource(id = R.drawable.ob1),
+                                contentDescription = null)
+
                     }
                     Box(
                         modifier = Modifier

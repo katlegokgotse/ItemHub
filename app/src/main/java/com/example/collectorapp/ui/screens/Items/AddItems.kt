@@ -7,6 +7,7 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,6 +30,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,9 +40,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
+import java.util.Objects
 
 @Composable
 fun AddingItems(
@@ -49,8 +55,7 @@ fun AddingItems(
     val file = addItemsViewModel.createImageFile(context)
     val photoUri = addItemsViewModel.getUriForFile(context, file)
     val itemInformation by addItemsViewModel.itemsState.observeAsState(ItemInformation())
-
-
+    
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
             addItemsViewModel.handleCaptureImage(context, photoUri)
@@ -92,7 +97,6 @@ fun AddingItems(
         }
     }
 }
-
 @Composable
 fun CaptureImageSection(
     addItemsViewModel: AddItemsViewModel,
@@ -117,7 +121,7 @@ fun CaptureImageSection(
         }
         MyItemsCard(
             addItemsViewModel = addCategoryViewModel,
-            imageUri = photoUri ,
+            imageUri = addItemsViewModel.itemsState.value!!.itemImage ,
             contentDescription = addItemsViewModel.itemsState.value!!.itemDescription ?: "",
             title = addItemsViewModel.itemsState.value!!.itemName ?: "",
             modifier = Modifier.fillMaxWidth()

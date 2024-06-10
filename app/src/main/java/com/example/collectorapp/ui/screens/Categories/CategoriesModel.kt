@@ -9,5 +9,5 @@ data class Categories(
 )
 
 data class CategoryList(
-    val categoryList: List<Categories> = mutableListOf()
+    val categoryList: List<Categories>
 )

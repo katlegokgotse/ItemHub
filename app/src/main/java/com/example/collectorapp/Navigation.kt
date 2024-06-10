@@ -24,7 +24,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 fun NavigateAuth(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = "home",
+    startDestination: String = "categoryDetailsPage",
     signInViewModel: AuthenticationViewModel,
     addCategoryViewModel: AddCategoryViewModel,
     addItemsViewModel: AddItemsViewModel
@@ -58,7 +58,7 @@ fun NavigateAuth(
         }
 
         composable(route = "categoryDetailsPage"){
-            CategoryDetailsPage()
+            CategoryDetailsPage(ai = addItemsViewModel, ac = addCategoryViewModel)
         }
 
         composable(route = "categories_home"){

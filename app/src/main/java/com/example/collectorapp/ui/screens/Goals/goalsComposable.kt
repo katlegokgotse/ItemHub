@@ -3,10 +3,14 @@ package com.example.collectorapp.ui.screens.Goals
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,6 +26,7 @@ import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.example.collectorapp.ui.screens.Goals.EnumGoals
 import com.example.collectorapp.ui.screens.Goals.GoalDetails
 
@@ -55,7 +60,7 @@ fun CircularGoalProgressIndicator(addItemsViewModel: AddItemsViewModel){
         currentGoalProgress = addItemsViewModel._itemsList.value.itemList.size.toFloat()
     }
     Column {
-        LinearProgressIndicator(
+        CircularProgressIndicator(
             progress = currentGoalProgress / 10,
             modifier = Modifier.fillMaxWidth()
         )
@@ -70,9 +75,11 @@ fun GoalsDetailsPage(selectedGoal: EnumGoals, addItemsViewModel: AddItemsViewMod
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.Blue)
+            .padding(25.dp)
     ){
         Column{
-            Text(text = goalTitle)
+            Text(text = goalTitle, fontSize = 28.sp)
+            Spacer(modifier = Modifier.height(20.dp))
             Text(text = goalDescription)
             LinearGoalProgressIndicator(addItemsViewModel)
         }
@@ -80,30 +87,24 @@ fun GoalsDetailsPage(selectedGoal: EnumGoals, addItemsViewModel: AddItemsViewMod
     }
 }
 @Composable
-fun GoalSummaryPage(selectedGoal: EnumGoals, addItemsViewModel: AddItemsViewModel){
+fun GoalsSummaryPage(selectedGoal: EnumGoals, addItemsViewModel: AddItemsViewModel){
     val goalTitle = selectedGoal.goalDetails.toString()
     val goalDescription = selectedGoal.goalDetails.goalDescription
-    Card(
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
+            .fillMaxSize()
+            .background(color = Color.Blue)
+            .padding(25.dp)
     ){
-        Surface {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = Color.Blue)
-            ){
-                Column{
-                    Text(text = goalTitle)
-                    Text(text = goalDescription)
-                    LinearGoalProgressIndicator(addItemsViewModel)
-                }
-
-            }
+        Column{
+            Text(text = goalTitle, fontSize = 28.sp)
+            //Spacer(modifier = Modifier.height(20.dp))
+            Text(text = goalDescription)
+            CircularGoalProgressIndicator(addItemsViewModel)
         }
     }
 }
+
 
 @Preview
 @Composable

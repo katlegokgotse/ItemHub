@@ -5,17 +5,15 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
-import com.example.collectorapp.ui.screens.Authentication.UserRegistration
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.firestore
 import java.util.Calendar
-import java.util.Date
 
 class AddCategoryViewModel: ViewModel() {
     val _categoryState = mutableStateOf(Categories())
-    val _categoryListState = mutableStateOf(CategoryList())
+    val _categoryListState = mutableStateOf(CategoryList(emptyList()))
     val database: FirebaseDatabase by lazy { FirebaseDatabase.getInstance() }
     val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     val firestoreCategory = Firebase.firestore
@@ -33,16 +31,32 @@ class AddCategoryViewModel: ViewModel() {
     }
 
     fun saveCategory(categories: Categories){
-        val category = _categoryListState.value.categoryList.toMutableList()
-        category.add(categories)
-        _categoryListState.value = _categoryListState.value.copy(categoryList = category)
+        _categoryListState.value = _categoryListState.value.copy(categoryList = _categoryListState.value.categoryList + categories)
         addCategoriesToUser(userId = auth.currentUser!!.uid?:"")
         addCategoryToFirestore(categories)
     }
 
-    fun fetchCategories(){
-              _categoryListState.value = _categoryListState.value.copy(categoryList = _categoryListState.value.categoryList)
+     fun fetchCategories() {
+        val userId = auth.currentUser?.uid ?: return
+
+        firestoreCategory.collection("users").document(userId)
+            .collection("categories")
+            .get()
+            .addOnSuccessListener { documents ->
+                val categoriesList = mutableListOf<Categories>()
+                for (document in documents) {
+                    val category = document.toObject(Categories::class.java)
+                    categoriesList.add(category)
+                }
+                // Use categoriesList as needed
+                _categoryListState.value = CategoryList(categoriesList)
+                Log.d(TAG, "Categories fetched successfully: $categoriesList")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error fetching categories from Firestore", e)
+            }
     }
+
     private fun addCategoryToFirestore(category: Categories) {
         val userId = auth.currentUser?.uid ?: return
         val categoryData = hashMapOf(

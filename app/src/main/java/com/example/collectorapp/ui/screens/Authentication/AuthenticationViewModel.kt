@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,10 +16,13 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.tasks.await
 
 class AuthenticationViewModel: ViewModel() {
     val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     val database: FirebaseDatabase by lazy { FirebaseDatabase.getInstance() }
+    val firestoreAuth = Firebase.firestore
     val _loginState = mutableStateOf(LoginScreen())
     val _userList = mutableStateOf(UserList())
     val _userReg = mutableStateOf(UserRegistration())
@@ -43,7 +47,7 @@ class AuthenticationViewModel: ViewModel() {
                         initialValue = PasswordValidationState(hasMinimum = false)
                     )
             }
-            _loginState.value = _loginState.value.copy(password = password.hashCode().toString())
+            _loginState.value = _loginState.value.copy(password = password)
         }
     }
 
@@ -62,7 +66,6 @@ class AuthenticationViewModel: ViewModel() {
     fun updateUserPasswordReg(password: String) {
         _userReg.value = _userReg.value.copy(password = password)
     }
-
     fun addUserRegistrationList(usersRegistration: UserRegistration) {
         //This function takes the usersRegistration list and adds the new user into it
         if (usersRegistration.password.length < 6) {
@@ -90,15 +93,15 @@ class AuthenticationViewModel: ViewModel() {
             email = usersRegistration.email,
             password = usersRegistration.password
         ) //Creating the database instance in firebase database
-
+        addUserToFirestore(
+            userId = auth.currentUser!!.uid,
+            name = usersRegistration.firstName,
+            lastName = usersRegistration.lastName,
+            email = usersRegistration.email,
+            password = usersRegistration.password
+        )
     }
-
-    private fun createUser(
-        email: String,
-        password: String,
-        onSuccess: (FirebaseUser?) -> Unit,
-        onFailure: (Exception?) -> Unit
-    ) {
+    private fun createUser(email: String, password: String, onSuccess: (FirebaseUser?) -> Unit, onFailure: (Exception?) -> Unit) {
         viewModelScope.launch {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener() { task ->
@@ -121,13 +124,7 @@ class AuthenticationViewModel: ViewModel() {
         }
     }
 
-    private fun addUserToDatabase(
-        userId: String?,
-        name: String,
-        lastName: String,
-        email: String,
-        password: String
-    ) {
+    private fun addUserToDatabase(userId: String?, name: String, lastName: String, email: String, password: String) {
         val user = UserRegistration(
             firstName = name,
             lastName = lastName,
@@ -150,8 +147,60 @@ class AuthenticationViewModel: ViewModel() {
                 }
         }
     }
+    private fun addUserToFirestore(userId: String?, name: String, lastName: String, email: String, password: String) {
+        val user = UserRegistration(
+            firstName = name,
+            lastName = lastName,
+            email = email,
+            password = password
+        )
+        val userId = firestoreAuth.collection("users").document().id
+        userId.let {id ->
+            firestoreAuth.collection("users").document(id).set(user)
+              .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // The operation was successful
+                        Log.d(TAG, "User data saved successfully")
+                    } else {
+                        // The operation failed
+                        task.exception?.let {
+                            Log.e(TAG, "Error saving user data", it)
+                        }
+                    }
+                }
+        }
+    }
 
-    private fun signInUser(
+    fun signInUserWithFirestore(email: String, password: String, callback: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val querySnapshot = firestoreAuth.collection("users")
+                    .whereEqualTo("email", email)
+                    .get()
+                    .await()
+
+                if (querySnapshot.isEmpty) {
+                    Log.d(TAG, "No user found with email: $email")
+                    callback(false) // No user found
+                } else {
+                    val userDocument = querySnapshot.documents.first()
+                    val storedPassword = userDocument.getString("password")
+                    if (password == storedPassword) {
+                        Log.d(TAG, "User signed in successfully")
+                        callback(true) // Successful sign-in
+                    } else {
+                        Log.d(TAG, "Incorrect password for email: $email")
+                        callback(false) // Incorrect password
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error getting docs", e)
+                callback(false) // Error occurred
+            }
+        }
+    }
+
+    /*private fun signInUser(
         email: String,
         password: String,
         onSuccess: (FirebaseUser?) -> Unit,
@@ -163,6 +212,13 @@ class AuthenticationViewModel: ViewModel() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
+                    signInUserWithFirestore(email, password) { success ->
+                        if (success) {
+                            navController.navigate("home")
+                        } else {
+                            // Handle unsuccessful sign-in (e.g., display an error message)
+                        }
+                    }
                     onSuccess(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -170,28 +226,36 @@ class AuthenticationViewModel: ViewModel() {
                     onFailure(task.exception)
                 }
             }
-    }
+    }*/
 
     fun fetchUserInformation(email: String, password: String, function: () -> Nothing, ) {
         val userList = _userList.value
-        signInUser(email,
+       /* signInUser(email,
             password,
             onSuccess = { _ -> Log.d(TAG, "createUserWithEmail:success") },
-            onFailure = { _ -> Log.d(TAG, "createUserWithEmail:failure") })
+            onFailure = { _ -> Log.d(TAG, "createUserWithEmail:failure") })*/
         //return userList.usersRegistration.any { it.email == email && it.password == password }
     }
 
     fun displayUserName() {
-        val userId = auth.currentUser?.uid ?: return
-        val userRef = database.reference.child("users").child(userId)
+        viewModelScope.launch {
+            val userId = auth.currentUser?.uid ?: return@launch
+            val userRef = database.reference.child("users").child(userId)
 
-        userRef.get().addOnSuccessListener { dataSnapshot ->
-            val user = dataSnapshot.getValue(UserRegistration::class.java)
-            val userName = user?.firstName ?: "No Name"
-           _userName.value = userName
-        }.addOnFailureListener { exception ->
-            Log.e(TAG, "Error fetching user name", exception)
-           _userName.value = "No name"
+            try {
+                userRef.get().addOnSuccessListener { dataSnapshot ->
+                    val user = dataSnapshot.getValue(UserRegistration::class.java)
+                    val userName = user?.firstName ?: "No Name"
+                    _userName.value = userName
+                }.addOnFailureListener { exception ->
+                    Log.e(TAG, "Error fetching user name", exception)
+                    _userName.value = "No name"
+                }.await() // Wait for the result
+            } catch (e: Exception) {
+                Log.e(TAG, "Error fetching user name", e)
+                _userName.value = "No name"
+            }
         }
     }
+
 }

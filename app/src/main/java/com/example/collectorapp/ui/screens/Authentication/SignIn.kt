@@ -1,5 +1,4 @@
 package com.example.collectorapp.ui.screens.Authentication
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.collectorapp.R
-
 @Composable
 fun LoginInterface(viewModel: AuthenticationViewModel, navController: NavController) {
     Box {
@@ -83,18 +81,23 @@ fun UserInput(viewModel: AuthenticationViewModel, navController: NavController) 
         )
         Spacer(modifier = Modifier.padding(10.dp))
         LoginButton(onClick = {
+            val email = viewModel._loginState.value.email
+            val password = viewModel._loginState.value.password
 
-                navController.navigate("home")
+            if (email.isBlank() || password.isBlank()) {
+                // Display an error message or UI indication that fields are empty
+                return@LoginButton
+            }
 
-                /* isAuthenticated ->
-                if (isAuthenticated){
-
-                }else{
-                    Log.d(TAG, "Authentication failed")
-                }*/
-            //This method returns a boolean from fetchUserInformation and tests it with what is in the list
-
+            viewModel.signInUserWithFirestore(email, password) { success ->
+                if (success) {
+                    navController.navigate("home")
+                } else {
+                    // Handle unsuccessful sign-in (e.g., display an error message)
+                }
+            }
         })
+
     }
 }
 

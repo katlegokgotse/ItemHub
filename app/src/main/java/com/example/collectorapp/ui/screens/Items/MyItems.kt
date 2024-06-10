@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,14 +38,13 @@ fun MyItemsCard(
     modifier: Modifier){
     Box(
         modifier = Modifier
-            .fillMaxWidth(0.5f)
+            .fillMaxWidth()
             .padding(16.dp)
     ){
         Column {
             Card(
                 modifier = modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(50.dp),
-                //elevation = 5.dp
+                shape = RoundedCornerShape(10.dp),
             ){
                 Box(
                     modifier = Modifier.height(200.dp)
@@ -53,7 +53,8 @@ fun MyItemsCard(
                         Image(
                             painter = rememberAsyncImagePainter(imageUri),
                             contentDescription = contentDescription,
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }?:
                         run{

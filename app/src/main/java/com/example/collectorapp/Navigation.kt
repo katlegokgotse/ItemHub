@@ -23,7 +23,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 fun NavigateAuth(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = "create_items",
+    startDestination: String = "splash_screen",
     signInViewModel: AuthenticationViewModel,
     addCategoryViewModel: AddCategoryViewModel,
     addItemsViewModel: AddItemsViewModel

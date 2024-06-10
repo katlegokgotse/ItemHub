@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -74,7 +76,9 @@ fun AddingItems(
         }
     }
 
-    Box(modifier = Modifier.padding(40.dp).fillMaxSize()) {
+    Box(modifier = Modifier
+        .padding(40.dp)
+        .fillMaxSize()) {
         LazyColumn {
             item {
                 CaptureImageSection(
@@ -87,7 +91,9 @@ fun AddingItems(
             }
             item {
                 UserItemsInput(addItemsViewModel = addItemsViewModel)
-                Button(onClick = {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
                     addItemsViewModel.saveItem(context, itemInformation)
                 }) {
                     Text(text = "Save")
@@ -108,7 +114,11 @@ fun CaptureImageSection(
 
     Column(modifier = Modifier.fillMaxWidth()) {
         val context = LocalContext.current
-        Button(onClick = {
+        Button(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clip(shape = MaterialTheme.shapes.small),
+            onClick = {
             val permissionCheckResult = ContextCompat.checkSelfPermission(
                 context, android.Manifest.permission.CAMERA
             )
@@ -118,7 +128,8 @@ fun CaptureImageSection(
                 permissionLauncher.launch(android.Manifest.permission.CAMERA)
             }
         }) {
-            Text(text = "Capture Image")
+            Image(painter = painterResource(id = R.drawable.camera),
+                contentDescription = "camera")
         }
         itemInformation.itemImage?.let {
             MyItemsCard(

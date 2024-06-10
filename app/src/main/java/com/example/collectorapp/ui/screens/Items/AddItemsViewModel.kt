@@ -64,6 +64,7 @@ class AddItemsViewModel: ViewModel() {
 
                 // Add item to the database
               addDatabase(itemInformation)
+                Toast.makeText(context, "Item: ${itemInformation.itemName} has been saved", Toast.LENGTH_SHORT).show()
             } else {
                 Log.e("AddItemsViewModel", "_itemsList.value is null")
                 Toast.makeText(context, "Error: Items list is null", Toast.LENGTH_SHORT).show()
@@ -79,8 +80,9 @@ class AddItemsViewModel: ViewModel() {
         }
     }
     fun createImageFile(context: Context): File {
+        val itemInformation: ItemInformation = ItemInformation()
         val timeStamp = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", java.util.Locale.getDefault()).format(Date())
-        val imageFileName = "JPEG_${timeStamp}_"
+        val imageFileName = "JPEG_${itemInformation.itemName}_${itemInformation.itemCategory}_${timeStamp}"
         return File.createTempFile(imageFileName, ".jpg", context.externalCacheDir)
 
     }
@@ -129,7 +131,5 @@ class AddItemsViewModel: ViewModel() {
             Log.e("AddItemsViewModel", "Exception in addDatabase: ${e.message}", e)
         }
     }
-
-
 }
 

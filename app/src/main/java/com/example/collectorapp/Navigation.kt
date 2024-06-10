@@ -10,8 +10,10 @@ import com.example.collectorapp.ui.screens.Authentication.LoginInterface
 import com.example.collectorapp.ui.screens.Authentication.RegisterInterface
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Categories.CategoriesHome
-import com.example.collectorapp.ui.screens.Categories.CategoryDetailsPage
+import com.example.collectorapp.ui.screens.Categories.CategoryDetailPage
 import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
+import com.example.collectorapp.ui.screens.Goals.EnumGoals
+import com.example.collectorapp.ui.screens.Goals.GoalsDetailsPage
 import com.example.collectorapp.ui.screens.Items.AddingItems
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 import com.example.collectorapp.ui.screens.Startup.CTA.CallToAction
@@ -24,7 +26,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 fun NavigateAuth(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = "categoryDetailsPage",
+    startDestination: String = "create_items",
     signInViewModel: AuthenticationViewModel,
     addCategoryViewModel: AddCategoryViewModel,
     addItemsViewModel: AddItemsViewModel
@@ -35,7 +37,7 @@ fun NavigateAuth(
         startDestination = startDestination
     ){
         composable("login_interface"){
-            LoginInterface(signInViewModel, navController)
+            LoginInterface(viewModel = signInViewModel, navController = navController)
         }
         composable("registration_interface"){
             RegisterInterface(authenticationViewModel = signInViewModel, navController = navController)
@@ -44,10 +46,13 @@ fun NavigateAuth(
             MyBottomAppBar(signInViewModel = signInViewModel)
         }
         composable(route = "create_category"){
-            UserCategoryInput(addCategoryViewModel, navController = navController)
+            UserCategoryInput(addCategoryViewModel = addCategoryViewModel, navController = navController)
         }
         composable(route = "create_items"){
-            AddingItems(addItemsViewModel = addItemsViewModel, addCategoryViewModel = addCategoryViewModel)
+            AddingItems(
+                addItemsViewModel = addItemsViewModel,
+                addCategoryViewModel = addCategoryViewModel,
+                navController = navController)
         }
         composable(route = "splash_screen"){
             SplashScreen(navController = navController)
@@ -58,12 +63,15 @@ fun NavigateAuth(
         }
 
         composable(route = "categoryDetailsPage"){
-            CategoryDetailsPage(ai = addItemsViewModel, ac = addCategoryViewModel)
+            CategoryDetailPage(ai = addItemsViewModel, ac = addCategoryViewModel, navController = navController)
         }
 
         composable(route = "categories_home"){
-           CategoriesHome(addItemsViewModel = addItemsViewModel,
-               addCategoryViewModel = addCategoryViewModel)
+            CategoriesHome(addItemsViewModel = addItemsViewModel,
+                addCategoryViewModel = addCategoryViewModel, navController = navController)
+        }
+        composable(route = "GoalsDetailsPage"){
+            GoalsDetailsPage( selectedGoal = EnumGoals.Starter, addItemsViewModel = addItemsViewModel)
         }
     }
 

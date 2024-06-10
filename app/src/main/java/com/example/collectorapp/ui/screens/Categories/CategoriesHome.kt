@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.collectorapp.R
 import com.example.collectorapp.ui.composables.HeadingText
 import com.example.collectorapp.ui.screens.Goals.EnumGoals
@@ -36,7 +37,8 @@ import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 @Composable
 fun CategoriesHome(
     addItemsViewModel: AddItemsViewModel,
-    addCategoryViewModel: AddCategoryViewModel
+    addCategoryViewModel: AddCategoryViewModel,
+    navController: NavController
 ) {
 
     val categories = addCategoryViewModel.fetchCategories()
@@ -71,7 +73,9 @@ fun CategoriesHome(
                 .padding(20.dp), textAlign = TextAlign.Start, fontSize = 26.sp)
             Card(modifier = Modifier.width(200.dp)
                 .padding(10.dp)
-                ,onClick = { /*TODO*/ }) {
+                ,onClick = {
+                    navController.navigate("GoalsDetailsPage")
+                }) {
                 GoalsSummaryPage(selectedGoal = EnumGoals.Packrat, addItemsViewModel = addItemsViewModel)
             }
 

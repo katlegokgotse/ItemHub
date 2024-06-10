@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.navigation.compose.rememberNavController
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Categories.CategoriesHome
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
@@ -14,5 +15,6 @@ import java.lang.reflect.Modifier
 fun Search(){
     val ac: AddCategoryViewModel = AddCategoryViewModel()
     val ai: AddItemsViewModel = AddItemsViewModel()
-   CategoriesHome(addItemsViewModel = ai, addCategoryViewModel = ac)
+    val navController = rememberNavController()
+   CategoriesHome(addItemsViewModel = ai, addCategoryViewModel = ac, navController = navController)
 }

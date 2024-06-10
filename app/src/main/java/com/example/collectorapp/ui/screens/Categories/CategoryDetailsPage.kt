@@ -7,11 +7,11 @@ import androidx.navigation.NavController
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 
 @Composable
-fun CategoryDetailsPage(ac: AddCategoryViewModel, ai: AddItemsViewModel) {
+fun CategoryDetailPage(ac: AddCategoryViewModel, ai: AddItemsViewModel, navController: NavController) {
     LazyColumn {
         item{
             Box{
-                CategoriesHome(addItemsViewModel = ai, addCategoryViewModel = ac)
+               CategoryDetailPage(ac, ai, navController)
             }
         }
     }

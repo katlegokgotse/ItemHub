@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
@@ -29,6 +33,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -42,7 +47,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
+import com.example.collectorapp.ui.screens.Authentication.UserList
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
+import com.example.collectorapp.ui.screens.Categories.CategoryList
 import com.example.collectorapp.ui.screens.Categories.CreateCategory
 import com.example.collectorapp.ui.screens.Home.Home
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
@@ -66,7 +73,7 @@ class Main : ComponentActivity() {
                     Column {
                         SearchBar(addItemsViewModel = addItemsViewModel)
                         MyBottomAppBar(signInViewModel, )
-                        CategorySection(addCategoryViewModel)
+                        CategorySection(addCategoryViewModel, navController = rememberNavController())
                     }
                 }
             }
@@ -75,25 +82,27 @@ class Main : ComponentActivity() {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategorySection(a: AddCategoryViewModel) {
+fun CategorySection(a: AddCategoryViewModel, navController: NavController) {
     Column {
         Row {
             MyCategoryCard(a,
                 painter = painterResource(id = R.drawable.cto),
                 contentDescription = a._categoryState.value.categoryName,
-                title = a._categoryState.value.categoryName,
-                modifier = Modifier.width(150.dp))
+                title = a._categoryListState.value.categoryList[0].categoryName,
+                modifier = Modifier.width(150.dp),
+                onClick = {navController.navigate("categories_home")})
         }
     }
 }
+
 @Composable
 fun AddCategorySection(a: AddCategoryViewModel, navController: NavController, onClick: () -> Unit) {
-    CreateCategory(a,
+    CreateCategory(
                 painter = painterResource(id = R.drawable.cto),
                 contentDescription = a._categoryState.value.categoryName,
                 title = a._categoryState.value.categoryName,
                 modifier = Modifier.width(150.dp),
-                onClick = onClick
+                onClick = { onClick }
             )
 }
 @Composable

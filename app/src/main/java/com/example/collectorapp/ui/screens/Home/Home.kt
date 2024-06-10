@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -17,13 +18,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.collectorapp.AddCategorySection
 import com.example.collectorapp.CategorySection
+import com.example.collectorapp.R
 import com.example.collectorapp.ui.composables.HeadingText
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
+import com.example.collectorapp.ui.screens.Categories.CreateCategory
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 
 @Composable
@@ -48,7 +52,7 @@ fun Home(s: AuthenticationViewModel,
                 Spacer(modifier = Modifier.height(20.dp))
                 SearchBar(addItemsViewModel = addItemsViewModel)
                 Spacer(modifier = Modifier.height(20.dp))
-                Text(text = "Welcome ${userName}")
+                Text(text = "Welcome $userName")
                 TextButton(onClick = {
                     navController.navigate("categories_home")
                 }) {
@@ -70,7 +74,7 @@ fun Home(s: AuthenticationViewModel,
                         }
                     ) { category ->
                         if (category != null) {
-                            CategorySection(a = addCategoryViewModel)
+                            CategorySection(a = addCategoryViewModel, navController = navController)
                         } else {
                             AddCategorySection(
                                 a = addCategoryViewModel,
@@ -79,11 +83,8 @@ fun Home(s: AuthenticationViewModel,
                                     navController.navigate("create_category")
                                 }
                             )
-
                         }
-
                     }
-
                 }
             }
             item {
@@ -95,14 +96,14 @@ fun Home(s: AuthenticationViewModel,
                         }
                     ) { category ->
                         if (category != null) {
-                            CategorySection(a = addCategoryViewModel)
+                            CategorySection(a = addCategoryViewModel, navController)
                         } else {
-                            AddCategorySection(
-                                a = addCategoryViewModel,
-                                navController = navController,
-                                onClick = {
-                                    navController.navigate("create_category")
-                                }
+                            CreateCategory(
+                                painter = painterResource(id = R.drawable.cto),
+                                contentDescription = addCategoryViewModel._categoryState.value.categoryName,
+                                title = addCategoryViewModel._categoryState.value.categoryName,
+                                modifier = Modifier.width(150.dp),
+                                onClick = { navController.navigate("create_category") }
                             )
                         }
 

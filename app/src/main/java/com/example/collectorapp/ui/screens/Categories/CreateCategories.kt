@@ -48,15 +48,13 @@ fun AddNewCategories(addCategoryViewModel: AddCategoryViewModel, navController: 
     Box(modifier = Modifier.padding(40.dp)){
         Column {
             CreateCategory(
-                addCategoryViewModel =addCategoryViewModel ,
-                painter = painterResource(id = R.drawable.cto),
+                painter = painterResource(id = R.drawable.ob2),
                 contentDescription = addCategoryViewModel._categoryState.value.categoryName,
                 title = addCategoryViewModel._categoryState.value.categoryName,
                 modifier = Modifier,
                 onClick = {
-                   navController.navigate("categoryDetailsPage")
+                   navController.navigate("create_category")
                 })
-
         }
     }
 }
@@ -107,9 +105,9 @@ fun UserCategoryInput(addCategoryViewModel: AddCategoryViewModel, navController:
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateCategory(
-    addCategoryViewModel: AddCategoryViewModel,
     painter: Painter, contentDescription: String,
     title: String, modifier: Modifier,
     onClick: () -> Unit,) {
@@ -122,6 +120,7 @@ fun CreateCategory(
             Card(
                 modifier = modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(50.dp),
+                onClick = onClick
                 //elevation = 5.dp
             ) {
                 Box(
@@ -147,7 +146,6 @@ fun CreateCategory(
                     }
                 }
             }
-            //Text(text = addCategoryViewModel._categoryState.value.categoryName)
         }
     }
 }

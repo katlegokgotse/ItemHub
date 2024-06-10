@@ -47,14 +47,14 @@ import com.example.collectorapp.ui.screens.Categories.ui.theme.CollectorAppTheme
 fun AddNewCategories(addCategoryViewModel: AddCategoryViewModel, navController: NavController){
     Box(modifier = Modifier.padding(40.dp)){
         Column {
-            AddMyCategoryCard(
+            CreateCategory(
                 addCategoryViewModel =addCategoryViewModel ,
                 painter = painterResource(id = R.drawable.cto),
                 contentDescription = addCategoryViewModel._categoryState.value.categoryName,
                 title = addCategoryViewModel._categoryState.value.categoryName,
                 modifier = Modifier,
                 onClick = {
-                   navController.navigate("home")
+                   navController.navigate("categoryDetailsPage")
                 })
 
         }
@@ -108,11 +108,11 @@ fun UserCategoryInput(addCategoryViewModel: AddCategoryViewModel, navController:
 }
 
 @Composable
-fun AddMyCategoryCard(
+fun CreateCategory(
     addCategoryViewModel: AddCategoryViewModel,
     painter: Painter, contentDescription: String,
     title: String, modifier: Modifier,
-    onClick: () -> Unit) {
+    onClick: () -> Unit,) {
     Box(
         modifier = Modifier
             .fillMaxWidth(0.5f)
@@ -147,7 +147,7 @@ fun AddMyCategoryCard(
                     }
                 }
             }
-            Text(text = addCategoryViewModel._categoryState.value.categoryName)
+            //Text(text = addCategoryViewModel._categoryState.value.categoryName)
         }
     }
 }

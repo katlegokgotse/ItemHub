@@ -43,6 +43,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.collectorapp.ui.screens.Authentication.AuthenticationViewModel
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
+import com.example.collectorapp.ui.screens.Categories.CreateCategory
 import com.example.collectorapp.ui.screens.Home.Home
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
 import com.example.collectorapp.ui.screens.Items.MyCategoryCard
@@ -82,21 +83,18 @@ fun CategorySection(a: AddCategoryViewModel) {
                 contentDescription = a._categoryState.value.categoryName,
                 title = a._categoryState.value.categoryName,
                 modifier = Modifier.width(150.dp))
-
         }
     }
 }
 @Composable
 fun AddCategorySection(a: AddCategoryViewModel, navController: NavController, onClick: () -> Unit) {
-         /*   AddMyCategoryCard(a,
+    CreateCategory(a,
                 painter = painterResource(id = R.drawable.cto),
                 contentDescription = a._categoryState.value.categoryName,
                 title = a._categoryState.value.categoryName,
                 modifier = Modifier.width(150.dp),
                 onClick = onClick
             )
-            */
-
 }
 @Composable
 fun SearchBar(addItemsViewModel: AddItemsViewModel){

@@ -27,7 +27,6 @@ class AuthenticationViewModel: ViewModel() {
     val _userList = mutableStateOf(UserList())
     val _userReg = mutableStateOf(UserRegistration())
     val validatePassword: ValidatePassword = ValidatePassword()
-
     private val _userName = MutableLiveData<String>()
     val userName: LiveData<String> get() = _userName
 
@@ -240,22 +239,33 @@ class AuthenticationViewModel: ViewModel() {
     fun displayUserName() {
         viewModelScope.launch {
             val userId = auth.currentUser?.uid ?: return@launch
-            val userRef = database.reference.child("users").child(userId)
+            val userRef = firestoreAuth.collection("users").document(userId)
 
-            try {
-                userRef.get().addOnSuccessListener { dataSnapshot ->
-                    val user = dataSnapshot.getValue(UserRegistration::class.java)
-                    val userName = user?.firstName ?: "No Name"
-                    _userName.value = userName
-                }.addOnFailureListener { exception ->
-                    Log.e(TAG, "Error fetching user name", exception)
-                    _userName.value = "No name"
-                }.await() // Wait for the result
-            } catch (e: Exception) {
-                Log.e(TAG, "Error fetching user name", e)
-                _userName.value = "No name"
+            fun displayUserName() {
+                viewModelScope.launch {
+                    val userId = auth.currentUser?.uid ?: return@launch
+                    val userRef = firestoreAuth.collection("users").document(userId)
+
+                    try {
+                        val documentSnapshot = userRef.get().await()
+                        if (documentSnapshot.exists()) {
+                            val user = documentSnapshot.toObject(UserRegistration::class.java)
+                            val userName = user?.firstName ?: "No Name"
+                            _userName.value = userName
+                            Log.d(TAG, "Fetched user name: $userName")
+                        } else {
+                            Log.d(TAG, "No such document in Firestore")
+                            _userName.value = "No Name"
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error fetching user name", e)
+                        _userName.value = "No name"
+                    }
+                }
             }
+
         }
     }
+
 
 }

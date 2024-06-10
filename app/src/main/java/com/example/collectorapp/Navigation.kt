@@ -10,6 +10,7 @@ import com.example.collectorapp.ui.screens.Authentication.LoginInterface
 import com.example.collectorapp.ui.screens.Authentication.RegisterInterface
 import com.example.collectorapp.ui.screens.Categories.AddCategoryViewModel
 import com.example.collectorapp.ui.screens.Categories.CategoriesHome
+import com.example.collectorapp.ui.screens.Categories.CategoryDetailsPage
 import com.example.collectorapp.ui.screens.Categories.UserCategoryInput
 import com.example.collectorapp.ui.screens.Items.AddingItems
 import com.example.collectorapp.ui.screens.Items.AddItemsViewModel
@@ -23,7 +24,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 fun NavigateAuth(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = "login_interface",
+    startDestination: String = "home",
     signInViewModel: AuthenticationViewModel,
     addCategoryViewModel: AddCategoryViewModel,
     addItemsViewModel: AddItemsViewModel
@@ -55,8 +56,9 @@ fun NavigateAuth(
         composable(route = "onboarding_page"){
             OnBoarding(navController = navController)
         }
-        composable(route = "call_to_action"){
-            CallToAction(navController = navController)
+
+        composable(route = "categoryDetailsPage"){
+            CategoryDetailsPage()
         }
 
         composable(route = "categories_home"){

@@ -10,7 +10,18 @@ data class ItemInformation(
     val itemBrand: String =  "",
     val yearOfAcquisition: String = "",
     val itemImage: Uri? = null
-)
+){
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "itemName" to itemName,
+            "itemBrand" to itemBrand,
+            "itemDescription" to itemDescription,
+            "yearOfAcquisition" to yearOfAcquisition,
+            "itemCategory" to itemCategory,
+            "itemImage" to itemImage?.toString() // Convert Uri to String
+        )
+    }
+}
 data class ItemList(
     val itemList: List<ItemInformation> = mutableListOf()
 )

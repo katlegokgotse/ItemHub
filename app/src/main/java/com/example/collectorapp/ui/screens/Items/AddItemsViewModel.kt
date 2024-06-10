@@ -31,7 +31,7 @@ class AddItemsViewModel: ViewModel() {
     val itemDatabase: FirebaseDatabase by lazy { FirebaseDatabase.getInstance() }
 
     fun updateItemName(itemName: String){
-        _itemsState.value = _itemsState.value!!.copy(itemName = itemName)
+        _itemsState.value = _itemsState.value?.copy(itemName = itemName)
     }
 
     fun updateDescription(itemDescription: String) {
@@ -46,29 +46,32 @@ class AddItemsViewModel: ViewModel() {
     }
     fun saveItem(context: Context, itemInformation: ItemInformation){
         // User validation
-        if (itemInformation.itemName.isBlank()) {
-            Toast.makeText(context, "Item name is required", Toast.LENGTH_SHORT).show()
+        if (itemInformation.itemName.isBlank() ||
+            itemInformation.itemDescription.isBlank() ||
+            itemInformation.yearOfAcquisition.isBlank() ||
+            itemInformation.itemBrand.isBlank()) {
+            Toast.makeText(context, "All fields are required", Toast.LENGTH_SHORT).show()
             return
         }
+        try {
+            // Check for null and provide logging
+            val itemsList = _itemsList.value
+            if (itemsList != null) {
+                val listItems = itemsList.itemList.toMutableList()
+                listItems.add(itemInformation)
+                _itemsList.value = itemsList.copy(itemList = listItems)
+                Log.d("AddItemsViewModel", "Item list updated successfully with ${listItems.size} items.")
 
-        if (itemInformation.itemDescription.isBlank()) {
-            Toast.makeText(context, "Item description is required", Toast.LENGTH_SHORT).show()
-            return
+                // Add item to the database
+              addDatabase(itemInformation)
+            } else {
+                Log.e("AddItemsViewModel", "_itemsList.value is null")
+                Toast.makeText(context, "Error: Items list is null", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Log.e("AddItemsViewModel", "Error adding item: ${e.message}", e)
+            Toast.makeText(context, "Error adding item: ${e.message}", Toast.LENGTH_SHORT).show()
         }
-
-        if (itemInformation.yearOfAcquisition.isBlank()) {
-            Toast.makeText(context, "Year of acquisition is required", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (itemInformation.itemBrand.isBlank()) {
-            Toast.makeText(context, "Item brand is required", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val listItems = _itemsList.value.itemList.toMutableList()
-        listItems.add(itemInformation)
-        _itemsList.value = _itemsList.value.copy(itemList = listItems)
-        addDatabase(itemInformation)
     }
     fun fetchItems(){
         viewModelScope.launch {
@@ -100,26 +103,33 @@ class AddItemsViewModel: ViewModel() {
             }
         }
     }
-    private fun addDatabase(
-        item: ItemInformation
-    ){
-        ItemInformation()
-        val itemId = itemDatabase.reference.child("users").child("items").push().key
-        if (itemId != null) {
-            itemDatabase.reference.child("users").child("items").setValue(item)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // The operation was successful
-                        Log.d(ContentValues.TAG, "Items saved successfully")
-                    } else {
-                        // The operation failed
-                        task.exception?.let {
-                            Log.e(ContentValues.TAG, "Error saving user data", it)
+    private fun addDatabase(item: ItemInformation) {
+        try {
+            val itemReference = itemDatabase.reference.child("users")
+                .child("categories")
+                .child("items")
+                .push()
+
+            val itemId = itemReference.key
+            if (itemId != null) {
+                itemReference.setValue(item.toMap())
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("AddItemsViewModel", "Item saved successfully with ID: $itemId")
+                        } else {
+                            task.exception?.let {
+                                Log.e("AddItemsViewModel", "Error saving item data", it)
+                            }
                         }
                     }
-                }
+            } else {
+                Log.e("AddItemsViewModel", "Generated itemId is null")
+            }
+        } catch (e: Exception) {
+            Log.e("AddItemsViewModel", "Exception in addDatabase: ${e.message}", e)
         }
     }
+
 
 }
 

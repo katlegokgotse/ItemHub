@@ -2,6 +2,7 @@ package com.example.collectorapp.ui.screens.Items
 
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -55,7 +56,7 @@ fun AddingItems(
     val file = addItemsViewModel.createImageFile(context)
     val photoUri = addItemsViewModel.getUriForFile(context, file)
     val itemInformation by addItemsViewModel.itemsState.observeAsState(ItemInformation())
-    
+
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
             addItemsViewModel.handleCaptureImage(context, photoUri)
@@ -87,9 +88,7 @@ fun AddingItems(
             item {
                 UserItemsInput(addItemsViewModel = addItemsViewModel)
                 Button(onClick = {
-                    itemInformation.let {
-                        addItemsViewModel.saveItem(it)
-                    }
+                    addItemsViewModel.saveItem(context, itemInformation)
                 }) {
                     Text(text = "Save")
                 }
@@ -105,6 +104,8 @@ fun CaptureImageSection(
     permissionLauncher: ManagedActivityResultLauncher<String, Boolean>,
     cameraLauncher: ManagedActivityResultLauncher<Uri, Boolean>
 ) {
+    val itemInformation by addItemsViewModel.itemsState.observeAsState(ItemInformation())
+
     Column(modifier = Modifier.fillMaxWidth()) {
         val context = LocalContext.current
         Button(onClick = {
@@ -119,94 +120,54 @@ fun CaptureImageSection(
         }) {
             Text(text = "Capture Image")
         }
-        MyItemsCard(
-            addItemsViewModel = addCategoryViewModel,
-            imageUri = addItemsViewModel.itemsState.value!!.itemImage ,
-            contentDescription = addItemsViewModel.itemsState.value!!.itemDescription ?: "",
-            title = addItemsViewModel.itemsState.value!!.itemName ?: "",
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
-}
-
-@ExperimentalPagerApi
-@Composable
-fun AddItemsTopSection(
-    onSave: () -> Unit = {},
-    onCancel: () -> Unit = {},
-    addItemsViewModel: AddItemsViewModel
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-            .background(color = Color.Transparent),
-    ) {
-        // Back button
-        IconButton(onClick = {},
-            modifier = Modifier.align(Alignment.CenterStart)) {
-            Icon(imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft, contentDescription = null)
+        itemInformation.itemImage?.let {
+            MyItemsCard(
+                addItemsViewModel = addCategoryViewModel,
+                imageUri = it ,
+                contentDescription = itemInformation.itemDescription ?: "",
+                title = itemInformation.itemName ?: "",
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
-        // Skip Button
-        TextButton(
-            onClick = {
-                val newItems = ItemInformation(
-                    itemName = addItemsViewModel.itemsState.value!!.itemName,
-                    itemBrand = addItemsViewModel.itemsState.value!!.itemBrand,
-                    itemDescription = addItemsViewModel.itemsState.value!!.itemDescription,
-                    yearOfAcquisition = addItemsViewModel.itemsState.value!!.yearOfAcquisition,
-                    itemCategory = addItemsViewModel.itemsState.value!!.itemCategory,
-                    itemImage = addItemsViewModel.itemsState.value!!.itemImage
-                )
-                addItemsViewModel.saveItem(newItems)
-                onSave()
-            },
-            modifier = Modifier.align(Alignment.CenterEnd),
-            contentPadding = PaddingValues(0.dp)
-        ) {
-            Text(text = "Save", color = MaterialTheme.colorScheme.onBackground)
-        }
     }
 }
 
 @Composable
 fun UserItemsInput(addItemsViewModel: AddItemsViewModel) {
+    val itemInformation by addItemsViewModel.itemsState.observeAsState(ItemInformation())
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(16.dp)
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = addItemsViewModel.itemsState.value!!.itemName,
+            value = itemInformation.itemName,
             onValueChange = { addItemsViewModel.updateItemName(it) },
             label = { Text(text = "Enter Item Name") }
         )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = addItemsViewModel.itemsState.value!!.itemBrand,
+            value = itemInformation.itemBrand,
             onValueChange = { addItemsViewModel.updateBrand(it) },
             label = { Text(text = "Enter Item Brand") }
         )
-        Column(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp)
-        ) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                value = addItemsViewModel.itemsState.value!!.itemDescription,
-                onValueChange = { addItemsViewModel.updateDescription(it) },
-                label = { Text(text = "Enter Item Description") }
-            )
-        }
+                .height(150.dp),
+            value = itemInformation.itemDescription,
+            onValueChange = { addItemsViewModel.updateDescription(it) },
+            label = { Text(text = "Enter Item Description") }
+        )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = addItemsViewModel.itemsState.value!!.yearOfAcquisition,
+            value = itemInformation.yearOfAcquisition,
             onValueChange = { addItemsViewModel.updateYOA(it) },
             label = { Text(text = "Enter Year Of Acquisition") }
         )
     }
 }
+
